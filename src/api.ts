@@ -13,30 +13,32 @@ export interface IOSMemory {
 
   /** DAO runtime data. Updates each minute or faster. */
   daos: {
-    [symbol: string]: {
-      /** Price from Stability interchain oracle */
-      oraclePrice: string;
-      /** Coingecko price */
-      coingeckoPrice?: string;
-      /** Data for total revenue chart */
-      revenueChart: RevenueChart;
-      /** Extracted on-chain data */
-      onChainData: {
-        [chainId: string]: {
-          stakingAPR: number;
-          staked: number;
-          units: {
-            [unitId: string]: {
-              pendingRevenue: number;
-            };
-          };
-        };
-      };
-    };
+    [symbol: string]: IDAOAPIData;
   };
 
   /** Instant Updates by subscribing to github application webhooks */
   builders: IBuildersMemory;
+}
+
+export interface IDAOAPIData {
+  /** Price from Stability interchain oracle */
+  oraclePrice: string;
+  /** Coingecko price */
+  coingeckoPrice?: string;
+  /** Data for total revenue chart */
+  revenueChart: RevenueChart;
+  /** Extracted on-chain data */
+  onChainData: {
+    [chainId: string]: {
+      stakingAPR: number;
+      staked: number;
+      units: {
+        [unitId: string]: {
+          pendingRevenue: number;
+        };
+      };
+    };
+  };
 }
 
 export type Prices = {

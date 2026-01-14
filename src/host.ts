@@ -6,37 +6,65 @@ import { ChainName, chains, getChainByName } from "./chains";
 import { IAgent } from "./agents";
 import { IBuilderActivity } from "./activity/builder";
 import { Activity } from "./activity";
+import { IDAOAPIData } from "./api";
 
 export const HOST_DESCRIPTION = "A Cozy Home for DAOs";
 
 /**
  Represents a DAO running on Host.
 
- todo: Optimize it for effective on-chain storing
+ todo: Optimize for cross-chain
+ host-contracts: `IHost.DAOData`
 
- @version 0.1.0
+ @version 0.2.0
  @alpha
  @interface
  */
-export interface IDAO {
-  /**
-   DAO lifecycle phase.
-   Changes permissionless when next phase start timestamp reached.
-   */
-  phase: LifecyclePhase;
-
-  /** Name of the DAO, used in token names. Without DAO word. */
-  name: string;
+export interface IDAOData {
+  /** SEGMENT 1: ON-CHAIN on all chains where Host deployed */
 
   /**
    * Tradeable interchain ERC-20 token symbol.
    * Lowercased used as slug.
    * While token symbol is SYM then additional DAO tokens symbols are:
    * seedSYM, saleSYM, xSYM, SYM_DAO
+   *
+   * host-contracts: HostLib.OsStorage.usedSymbols
    */
   symbol: string;
 
-  /** Community socials. Update by `OS.updateSocials` */
+  /** SEGMENT 2: ON-CHAIN on chains where DAO bridged */
+
+  /** Name of the DAO, used in token names. Without DAO word. */
+  name: string;
+
+  /**
+   DAO lifecycle phase.
+   Changes permissionless when next phase start timestamp reached.
+   */
+  phase: LifecyclePhase;
+
+  /**
+   Deployed smart-contracts.
+   host-contracts: deployments of current instance chain only.
+  */
+  deployments: IDAODeployments;
+
+  /** Settings of DAO for current chain. This is the only place to save settings of DAO for chains. */
+  chainSettings: IDAOChainSettings;
+
+  /** IDs of Units running on current chain */
+  unitIds?: string[];
+
+  /** On-chain DAO parameters for tokenomics and revenue sharing */
+  params: IDAOParameters;
+
+  /** SEGMENT 3: ON-CHAIN on initial chain of DAO */
+
+  /** Where initial deployment became */
+  initialChain: ChainName;
+
+  /** Community socials. Update by `Host.updateSocials` */
   socials: string[];
 
   /** Activities of the organization. */
@@ -45,33 +73,45 @@ export interface IDAO {
   /** Images of tokens. Absolute or relative from stabilitydao/.github repo /os/ folder.  */
   images: IDAOImages;
 
-  /** Deployed smart-contracts */
-  deployments: IDAODeployments;
-
   /** Revenue generating units owned by the organization. */
   units: IUnit[];
 
-  /** Operating agents managed by the organization. */
-  agents: IAgent[];
+  /** Fundraising */
+  funding: IFunding[];
 
-  /** On-chain DAO parameters for tokenomics, governance and revenue sharing */
-  params: IDAOParameters;
+  /** Vesting allocations  */
+  vesting: IVesting[];
 
-  /** Supply distribution and fundraising events */
-  tokenomics: {
-    /** Fundraising */
-    funding: IFunding[];
-    /** Where initial deployment became */
-    initialChain: ChainName;
-    /** Vesting allocations  */
-    vesting?: IVesting[];
-  };
+  /** Settings of DAO Governance */
+  governanceSettings: IGovernanceSettings;
 
   /** Deployer of a DAO have power only at DRAFT phase. */
   deployer: string;
 
-  /** DAOs engaging BUILDER activity settings are stored off-chain  */
+  /** DAO custom metadata stored off-chain. */
+  daoMetaDataLocation?: string; // "local","https://..."
+
+  /** SEGMENT 4: OFF-CHAIN emitted data */
+
+  unitsMetaData: IUnitMetaData[];
+
+  /** SEGMENT 5: OFF-CHAIN custom data managed by DAO */
+
+  /** Storage for BUILDER activity and Agents data. */
+  daoMetaData?: IDAOMetaData;
+
+  /** SEGMENT 5: API data of DAO */
+
+  /** Hot data updates each minute */
+  api?: IDAOAPIData;
+}
+
+export interface IDAOMetaData {
+  /** DAOs engaging BUILDER activity settings  */
   builderActivity?: IBuilderActivity;
+
+  /** Operating agents managed by the organization. */
+  agents?: IAgent[];
 }
 
 /** Images of tokens. Absolute or relative from stabilitydao/.github repo /os/ folder.  */
@@ -119,7 +159,7 @@ export enum LifecyclePhase {
 }
 
 /**
- Parameters of VE-tokenomics, Governance and revenue sharing.
+ Parameters of VE-tokenomics and revenue sharing.
  @interface
  */
 export interface IDAOParameters {
@@ -127,14 +167,21 @@ export interface IDAOParameters {
   vePeriod: number;
   /** Instant exit fee, percent */
   pvpFee: number;
-  /** Minimal power in chain to have voting rights, amount of staked tokens */
+  /** Minimal power (min stake amount) to be a holder of DAO */
   minPower?: number;
-  /** Bribe share for Tokenomics Transactions (vested funds spending), percent */
-  ttBribe?: number;
   /** Share of total DAO revenue going to accidents compensations, percent */
   recoveryShare?: number;
+}
+
+export interface IDAOChainSettings {
+  bbRate: number;
+}
+
+export interface IGovernanceSettings {
   /** Minimal total voting power (self and delegated) need to create a proposal */
   proposalThreshold?: number;
+  /** Bribe share for Tokenomics Transactions (vested funds spending), percent */
+  ttBribe?: number;
 }
 
 export interface IFunding {
@@ -212,27 +259,28 @@ export interface IUnit {
   unitId: string;
   /** Blockchains where Unit deployed. Filled only for initial DAO chain Host instance. */
   chainIds?: string[];
-  /** Unit data that emitted, indexed and saved to `daos` snapshot constant, translated by Host API later. */
-  metaData: {
-    /** Short name of the unit */
-    name: string;
-    /** Status of unit changes appear when unit starting to work and starting earning revenue */
-    status: UnitStatus;
-    /** Supported type of the Unit */
-    type: UnitType;
-    /** The share of a Unit's profit received by the DAO to which it belongs. 100 - 100%. */
-    revenueShare: number;
-    /** A unique emoji for the shortest possible representation of a Unit. */
-    emoji?: string;
-    /** Frontend endpoints of Unit */
-    ui?: IUnitUILink[];
-    /** Links to API of the Unit */
-    api?: string[];
-    /** Components of the Unit. */
-    //components?: { [category in UnitComponentCategory]?: UnitComponent[] };
-  };
   /** DAO UID of Unit Developer (Pool tasks solver) */
   developerUid?: string;
+}
+
+/** Unit data that emitted, indexed and saved, translated by Host API later. */
+export interface IUnitMetaData {
+  /** Short name of the unit */
+  name: string;
+  /** Status of unit changes appear when unit starting to work and starting earning revenue */
+  status: UnitStatus;
+  /** Supported type of the Unit */
+  type: UnitType;
+  /** The share of a Unit's profit received by the DAO to which it belongs. 100 - 100%. */
+  revenueShare: number;
+  /** A unique emoji for the shortest possible representation of a Unit. */
+  emoji?: string;
+  /** Frontend endpoints of Unit */
+  ui?: IUnitUILink[];
+  /** Links to API of the Unit */
+  api?: string[];
+  /** Components of the Unit. */
+  //components?: { [category in UnitComponentCategory]?: UnitComponent[] };
 }
 
 /** Supported unit types */
@@ -283,7 +331,7 @@ export class Host {
   blockTimestamp: number = Math.floor(new Date().getTime() / 1000);
 
   /** Local DAOs storage (in form of a mapping) */
-  daos: { [symbol: string]: IDAO } = {};
+  daos: { [symbol: string]: IDAOData } = {};
 
   /** Actual DAO symbols at all blockchains */
   usedSymbols: { [name: string]: boolean } = {};
@@ -351,8 +399,9 @@ export class Host {
     activity: Activity[],
     params: IDAOParameters,
     funding: IFunding[],
-  ): IDAO {
-    const dao: IDAO = {
+    metaDataLocation?: string,
+  ): IDAOData {
+    const dao: IDAOData = {
       phase: LifecyclePhase.DRAFT,
       name,
       symbol,
@@ -361,13 +410,17 @@ export class Host {
       images: {},
       deployments: {},
       units: [],
-      agents: [],
       params,
-      tokenomics: {
-        initialChain: chains[this.chainId].name,
-        funding,
+      chainSettings: {
+        bbRate: 50,
       },
+      initialChain: chains[this.chainId].name,
+      funding,
+      vesting: [],
+      governanceSettings: {},
       deployer: this.from,
+      daoMetaDataLocation: metaDataLocation,
+      unitsMetaData: [],
     };
 
     this.validate(dao);
@@ -382,7 +435,7 @@ export class Host {
   }
 
   /** Add live compatible DAO */
-  addLiveDAO(dao: IDAO) {
+  addLiveDAO(dao: IDAOData) {
     // todo _onlyVerifier
     this.validate(dao);
     this.daos[dao.symbol] = dao;
@@ -393,19 +446,29 @@ export class Host {
     });
   }
 
+  getDAOMetaData(
+    daoMetaData: { [symbolLowerCase: string]: IDAOMetaData },
+    symbol: string,
+  ): IDAOMetaData {
+    const dao = this.getDAO(symbol);
+    if (dao.daoMetaDataLocation === "local") {
+      return daoMetaData[symbol.toLowerCase()] as IDAOMetaData;
+    }
+    return {};
+  }
+
   /** Change lifecycle phase of a DAO */
   changePhase(symbol: string) {
     // anybody can call this
 
-    const dao = this.getDao(symbol);
+    const dao = this.getDAO(symbol);
     const currentTasks = this.tasks(symbol);
     if (currentTasks.length > 0) {
       throw new Error("SolveTasksFirst");
     }
 
     if (dao.phase === LifecyclePhase.DRAFT) {
-      const seed =
-        dao.tokenomics.funding[this.getFundingIndex(symbol, FundingType.SEED)];
+      const seed = dao.funding[this.getFundingIndex(symbol, FundingType.SEED)];
       if (seed.start > this.blockTimestamp) {
         throw new Error("WaitFundingStart");
       }
@@ -429,8 +492,7 @@ export class Host {
 
       this.daos[symbol].phase = LifecyclePhase.SEED;
     } else if (dao.phase === LifecyclePhase.SEED) {
-      const seed =
-        dao.tokenomics.funding[this.getFundingIndex(symbol, FundingType.SEED)];
+      const seed = dao.funding[this.getFundingIndex(symbol, FundingType.SEED)];
       if (seed.end > this.blockTimestamp) {
         throw new Error("WaitFundingEnd");
       }
@@ -445,8 +507,7 @@ export class Host {
         this.daos[symbol].phase = LifecyclePhase.SEED_FAILED;
       }
     } else if (dao.phase === LifecyclePhase.DEVELOPMENT) {
-      const tge =
-        dao.tokenomics.funding[this.getFundingIndex(symbol, FundingType.TGE)];
+      const tge = dao.funding[this.getFundingIndex(symbol, FundingType.TGE)];
       if (tge.start > this.blockTimestamp) {
         throw new Error("WaitFundingStart");
       }
@@ -457,8 +518,7 @@ export class Host {
 
       this.daos[symbol].phase = LifecyclePhase.TGE;
     } else if (dao.phase === LifecyclePhase.TGE) {
-      const tge =
-        dao.tokenomics.funding[this.getFundingIndex(symbol, FundingType.TGE)];
+      const tge = dao.funding[this.getFundingIndex(symbol, FundingType.TGE)];
 
       if (tge.end > this.blockTimestamp) {
         throw new Error("WaitFundingEnd");
@@ -488,7 +548,7 @@ export class Host {
       }
     } else if (dao.phase === LifecyclePhase.LIVE_CLIFF) {
       // if any vesting started then phase changed
-      const isVestingStarted = !!dao.tokenomics.vesting?.filter(
+      const isVestingStarted = !!dao.vesting?.filter(
         (v) => v.start < this.blockTimestamp,
       ).length;
       if (!isVestingStarted) {
@@ -498,7 +558,7 @@ export class Host {
       this.daos[symbol].phase = LifecyclePhase.LIVE_VESTING;
     } else if (dao.phase === LifecyclePhase.LIVE_VESTING) {
       // if any vesting started then phase changed
-      const isVestingEnded = !dao.tokenomics.vesting?.filter(
+      const isVestingEnded = !dao.vesting?.filter(
         (v) => v.end > this.blockTimestamp,
       ).length;
       if (!isVestingEnded) {
@@ -515,7 +575,7 @@ export class Host {
   /** @throws Error */
   updateImages(symbol: string, images: IDAOImages) {
     // check DAO symbol
-    const dao = this.getDao(symbol);
+    const dao = this.getDAO(symbol);
 
     // instant execute for DRAFT
     if (dao.phase === LifecyclePhase.DRAFT) {
@@ -530,15 +590,10 @@ export class Host {
     });
   }
 
-  private _updateImages(symbol: string, images: IDAOImages) {
-    this.daos[symbol].images = images;
-    this._emit(`Action ${DAOAction.UPDATE_IMAGES}`);
-  }
-
   /** @throws Error */
   updateSocials(symbol: string, socials: string[]) {
     // check DAO symbol
-    const dao = this.getDao(symbol);
+    const dao = this.getDAO(symbol);
 
     // instant execute for DRAFT
     if (dao.phase === LifecyclePhase.DRAFT) {
@@ -553,38 +608,33 @@ export class Host {
     });
   }
 
-  private _updateSocials(symbol: string, socials: string[]) {
-    this.daos[symbol].socials = socials;
-    this._emit(`Action ${DAOAction.UPDATE_SOCIALS}`);
-  }
-
   /** @throws Error */
-  updateUnits(symbol: string, units: IUnit[]): string | true {
+  updateUnits(
+    symbol: string,
+    units: IUnit[],
+    unitsMetaData: IUnitMetaData[],
+  ): string | true {
     // check DAO symbol
-    const dao = this.getDao(symbol);
+    const dao = this.getDAO(symbol);
 
     // instant execute for DRAFT
     if (dao.phase === LifecyclePhase.DRAFT) {
       this._onlyOwnerOf(symbol);
-      this._updateUnits(symbol, units);
+      this._updateUnits(symbol, units, unitsMetaData);
       return true;
     }
 
     // create proposal for other phases
     return this._proposeAction(symbol, DAOAction.UPDATE_UNITS, {
       units,
+      unitsMetaData,
     });
-  }
-
-  private _updateUnits(symbol: string, units: IUnit[]) {
-    this.daos[symbol].units = units;
-    this._emit(`Action ${DAOAction.UPDATE_UNITS}`);
   }
 
   /** @throws Error */
   updateFunding(symbol: string, funding: IFunding): string | true {
     // check DAO symbol
-    const dao = this.getDao(symbol);
+    const dao = this.getDAO(symbol);
 
     // validate payload
     this._validateFunding(dao.phase, [funding]);
@@ -602,17 +652,31 @@ export class Host {
     });
   }
 
+  private _updateSocials(symbol: string, socials: string[]) {
+    this.daos[symbol].socials = socials;
+    this._emit(`Action ${DAOAction.UPDATE_SOCIALS}`);
+  }
+
+  private _updateUnits(
+    symbol: string,
+    units: IUnit[],
+    unitsMetaData: IUnitMetaData[],
+  ) {
+    this.daos[symbol].units = units;
+    this.daos[symbol].unitsMetaData = unitsMetaData;
+    this._emit(`Action ${DAOAction.UPDATE_UNITS}`);
+  }
+
   private _updateFunding(symbol: string, funding: IFunding) {
-    const dao = this.getDao(symbol);
+    const dao = this.getDAO(symbol);
 
     const fundingExist =
-      dao.tokenomics.funding.filter((f) => f.type === funding.type).length ===
-      1;
+      dao.funding.filter((f) => f.type === funding.type).length === 1;
     if (fundingExist) {
       const fundingIndex = this.getFundingIndex(symbol, funding.type);
-      this.daos[symbol].tokenomics.funding[fundingIndex] = funding;
+      this.daos[symbol].funding[fundingIndex] = funding;
     } else {
-      this.daos[symbol].tokenomics.funding.push(funding);
+      this.daos[symbol].funding.push(funding);
     }
 
     this._emit(`Action ${DAOAction.UPDATE_FUNDING}`);
@@ -620,7 +684,7 @@ export class Host {
 
   updateVesting(symbol: string, vestings: IVesting[]) {
     // check DAO symbol
-    const dao = this.getDao(symbol);
+    const dao = this.getDAO(symbol);
 
     // validate
     this._validateVesting(dao.phase, vestings);
@@ -638,23 +702,18 @@ export class Host {
     });
   }
 
-  private _updateVesting(symbol: string, vestings: IVesting[]) {
-    this.daos[symbol].tokenomics.vesting = vestings;
-    this._emit(`Action ${DAOAction.UPDATE_VESTING}`);
-  }
-
   fund(symbol: string, amount: number) {
     // todo settings.minFunding
-    const dao = this.getDao(symbol);
+    const dao = this.getDAO(symbol);
     if (dao.phase === LifecyclePhase.SEED) {
       const seedIndex = this.getFundingIndex(symbol, FundingType.SEED);
-      const seed = dao.tokenomics.funding[seedIndex];
+      const seed = dao.funding[seedIndex];
       if (seed.raised + amount >= seed.maxRaise) {
         throw new Error("RaiseMaxExceed");
       }
 
       // transfer amount of exchangeAsset to seedToken contract
-      this.daos[symbol].tokenomics.funding[seedIndex].raised += amount;
+      this.daos[symbol].funding[seedIndex].raised += amount;
 
       // mint seedToken to user
 
@@ -663,14 +722,14 @@ export class Host {
 
     if (dao.phase === LifecyclePhase.TGE) {
       const tgeIndex = this.getFundingIndex(symbol, FundingType.TGE);
-      const tge = dao.tokenomics.funding[tgeIndex];
+      const tge = dao.funding[tgeIndex];
       if (tge.raised + amount >= tge.maxRaise) {
         throw new Error("RaiseMaxExceed");
       }
 
       // transfer amount of exchangeAsset to tgeToken contract
 
-      this.daos[symbol].tokenomics.funding[tgeIndex].raised += amount;
+      this.daos[symbol].funding[tgeIndex].raised += amount;
 
       // mint tgeToken to user
 
@@ -678,32 +737,6 @@ export class Host {
     }
 
     throw new Error("NotFundingPhase");
-  }
-
-  private _proposeAction(
-    symbol: string,
-    action: DAOAction,
-    payload: any,
-  ): string {
-    const dao = this.getDao(symbol);
-
-    // todo check for initial chain
-    // todo get user power
-    // todo check proposalThreshold
-    // todo validate payload
-
-    const proposalId = Math.round(Math.random() * Math.random()).toString();
-
-    this.proposals[proposalId] = {
-      id: proposalId,
-      created: this.blockTimestamp,
-      action,
-      symbol,
-      payload,
-      status: VotingStatus.VOTING,
-    };
-
-    return proposalId;
   }
 
   receiveVotingResults(proposalId: string, succeed: boolean) {
@@ -726,7 +759,11 @@ export class Host {
         this._updateSocials(proposal.symbol, proposal.payload.socials);
       }
       if (proposal.action === DAOAction.UPDATE_UNITS) {
-        this._updateUnits(proposal.symbol, proposal.payload.units);
+        this._updateUnits(
+          proposal.symbol,
+          proposal.payload.units,
+          proposal.payload.unitsMetaData,
+        );
       }
       if (proposal.action === DAOAction.UPDATE_FUNDING) {
         this._updateFunding(proposal.symbol, proposal.payload.funding);
@@ -741,11 +778,11 @@ export class Host {
   /** OFF-CHAIN only **/
   /** @throws Error */
   roadmap(symbol: string): IRoadmapItem[] {
-    const dao: IDAO = this.getDao(symbol);
+    const dao: IDAOData = this.getDAO(symbol);
     const r: IRoadmapItem[] = [];
     let tgeRun = 0;
 
-    for (const funding of dao.tokenomics.funding) {
+    for (const funding of dao.funding) {
       if (funding.type === FundingType.SEED) {
         r.push({
           phase: LifecyclePhase.SEED,
@@ -772,10 +809,10 @@ export class Host {
       }
     }
 
-    if (dao.tokenomics.vesting) {
+    if (dao.vesting.length > 0) {
       let vestingStart = this.blockTimestamp;
       let vestingEnd = this.blockTimestamp;
-      for (const vesting of dao.tokenomics.vesting) {
+      for (const vesting of dao.vesting) {
         if (vesting.start < vestingStart) {
           vestingStart = vesting.start;
         }
@@ -804,7 +841,7 @@ export class Host {
 
   /** @throws Error */
   tasks(symbol: string): ITask[] {
-    const dao: IDAO = this.getDao(symbol);
+    const dao: IDAOData = this.getDAO(symbol);
     const r: ITask[] = [];
 
     if (dao.phase === LifecyclePhase.DRAFT) {
@@ -831,9 +868,8 @@ export class Host {
     } else if (dao.phase === LifecyclePhase.SEED) {
       const seedIndex = this.getFundingIndex(symbol, FundingType.SEED);
       if (
-        dao.tokenomics.funding[seedIndex].raised <
-          dao.tokenomics.funding[seedIndex].minRaise &&
-        dao.tokenomics.funding[seedIndex].end > this.blockTimestamp
+        dao.funding[seedIndex].raised < dao.funding[seedIndex].minRaise &&
+        dao.funding[seedIndex].end > this.blockTimestamp
       ) {
         r.push({
           name: "Need attract minimal seed funding",
@@ -842,8 +878,7 @@ export class Host {
     } else if (dao.phase === LifecyclePhase.DEVELOPMENT) {
       // check funding
       const tgeExist =
-        dao.tokenomics.funding.filter((f) => f.type === FundingType.TGE)
-          .length === 1;
+        dao.funding.filter((f) => f.type === FundingType.TGE).length === 1;
       if (!tgeExist) {
         r.push({
           name: "Need add pre-TGE funding",
@@ -858,15 +893,16 @@ export class Host {
       }
 
       // setup vesting allocations
-      if (!dao.tokenomics.vesting?.length) {
+      if (!dao.vesting?.length) {
         r.push({
           name: "Need vesting allocations",
         });
       }
 
       if (
-        dao.units.filter((u) => u.metaData.status === UnitStatus.LIVE)
-          .length === 0
+        dao.unitsMetaData?.filter(
+          (unitMetaData) => unitMetaData.status === UnitStatus.LIVE,
+        ).length === 0
       ) {
         r.push({
           name: "Run revenue generating units",
@@ -875,9 +911,8 @@ export class Host {
     } else if (dao.phase === LifecyclePhase.TGE) {
       const tgeIndex = this.getFundingIndex(symbol, FundingType.TGE);
       if (
-        dao.tokenomics.funding[tgeIndex].raised <
-          dao.tokenomics.funding[tgeIndex].minRaise &&
-        dao.tokenomics.funding[tgeIndex].end > this.blockTimestamp
+        dao.funding[tgeIndex].raised < dao.funding[tgeIndex].minRaise &&
+        dao.funding[tgeIndex].end > this.blockTimestamp
       ) {
         r.push({
           name: "Need attract minimal TGE funding",
@@ -899,7 +934,7 @@ export class Host {
 
   /** Strict on-chain validation */
   /** @throws Error */
-  validate(dao: IDAO) {
+  validate(dao: IDAOData) {
     this._validateName(dao.name);
     this._validateSymbol(dao.symbol);
     if (
@@ -909,7 +944,7 @@ export class Host {
       throw new Error(`VePeriod(${dao.params.vePeriod})`);
     }
     this._validatePvpFee(dao.params.pvpFee);
-    if (!dao.tokenomics.funding.length) {
+    if (!dao.funding.length) {
       throw new Error("NeedFunding");
     }
 
@@ -920,7 +955,7 @@ export class Host {
   }
 
   /** @throws Error */
-  getDao(symbol: string): IDAO {
+  getDAO(symbol: string): IDAOData {
     if (this.daos[symbol]) {
       return this.daos[symbol];
     }
@@ -928,7 +963,7 @@ export class Host {
   }
 
   getDaoOwner(symbol: string): string {
-    const dao = this.getDao(symbol);
+    const dao = this.getDAO(symbol);
 
     if (dao.phase === LifecyclePhase.DRAFT) {
       return dao.deployer;
@@ -941,18 +976,17 @@ export class Host {
         LifecyclePhase.TGE,
       ].includes(dao.phase)
     ) {
-      return dao.deployments[
-        getChainByName(dao.tokenomics.initialChain).chainId
-      ].seedToken as string;
+      return dao.deployments[getChainByName(dao.initialChain).chainId]
+        .seedToken as string;
     }
 
     return dao.deployments[this.chainId]?.daoToken as string;
   }
 
   getFundingIndex(symbol: string, type: FundingType) {
-    const dao = this.getDao(symbol);
-    for (let i = 0; i < dao.tokenomics.funding.length; i++) {
-      if (type === dao.tokenomics.funding[i].type) {
+    const dao = this.getDAO(symbol);
+    for (let i = 0; i < dao.funding.length; i++) {
+      if (type === dao.funding[i].type) {
         return i;
       }
     }
@@ -1046,6 +1080,42 @@ export class Host {
   private _sendCrossChainMessage(type: CROSS_CHAIN_MESSAGE, payload: any) {
     // todo some stub
   }
+
+  private _proposeAction(
+    symbol: string,
+    action: DAOAction,
+    payload: any,
+  ): string {
+    const dao = this.getDAO(symbol);
+
+    // todo check for initial chain
+    // todo get user power
+    // todo check proposalThreshold
+    // todo validate payload
+
+    const proposalId = Math.round(Math.random() * Math.random()).toString();
+
+    this.proposals[proposalId] = {
+      id: proposalId,
+      created: this.blockTimestamp,
+      action,
+      symbol,
+      payload,
+      status: VotingStatus.VOTING,
+    };
+
+    return proposalId;
+  }
+
+  private _updateImages(symbol: string, images: IDAOImages) {
+    this.daos[symbol].images = images;
+    this._emit(`Action ${DAOAction.UPDATE_IMAGES}`);
+  }
+
+  private _updateVesting(symbol: string, vestings: IVesting[]) {
+    this.daos[symbol].vesting = vestings;
+    this._emit(`Action ${DAOAction.UPDATE_VESTING}`);
+  }
 }
 
 export enum DAOAction {
@@ -1103,4 +1173,37 @@ interface IRoadmapItem {
   phase: LifecyclePhase;
   start: number;
   end?: number;
+}
+
+export function getDAOUnit(
+  daos: IDAOData[],
+  symbol: string,
+  unitId: string,
+): IUnit | undefined {
+  for (const dao of daos) {
+    if (dao.symbol.toLowerCase() === symbol.toLowerCase()) {
+      for (const unit of dao.units) {
+        if (unit.unitId === unitId) {
+          return unit;
+        }
+      }
+    }
+  }
+}
+
+export function getDAOUnitMetaData(
+  daos: IDAOData[],
+  symbol: string,
+  unitId: string,
+): IUnitMetaData | undefined {
+  for (const dao of daos) {
+    if (dao.symbol.toLowerCase() === symbol.toLowerCase()) {
+      for (let i = 0; i < dao.units.length; i++) {
+        const unit = dao.units[i];
+        if (unit.unitId === unitId) {
+          return dao.unitsMetaData[i];
+        }
+      }
+    }
+  }
 }

@@ -1,6 +1,20 @@
-import { daos, getUnitById, Host, UnitStatus, UnitType } from "../src";
-import { FundingType, IFunding, IVesting } from "../src/host";
-import { Activity, LifecyclePhase } from "../src";
+import {
+  daos,
+  getDAOUnit,
+  Host,
+  UnitStatus,
+  UnitType,
+  daoMetaData,
+  Activity,
+  LifecyclePhase,
+} from "../src";
+import {
+  FundingType,
+  getDAOUnitMetaData,
+  IFunding,
+  IUnitMetaData,
+  IVesting,
+} from "../src/host";
 import { activities } from "../src/activity";
 
 describe("testing Host", () => {
@@ -53,19 +67,24 @@ describe("testing Host", () => {
     expect(currentTasks.length).toBeLessThan(allTasks.length);
 
     // units project
-    os56.updateUnits(daoAliens.symbol, [
-      {
-        unitId: "aliens:os",
-        chainIds: ["56"],
-        metaData: {
+    os56.updateUnits(
+      daoAliens.symbol,
+      [
+        {
+          unitId: "aliens:os",
+          chainIds: ["56"],
+        },
+      ],
+      [
+        {
           name: "DAO Factory",
           status: UnitStatus.BUILDING,
           type: UnitType.DEFI_PROTOCOL,
           revenueShare: 100,
           ui: [],
         },
-      },
-    ]);
+      ],
+    );
 
     // registered socials
     os56.updateSocials(daoAliens.symbol, ["https://a.aa/a", "https://b.bb/b"]);
@@ -74,7 +93,7 @@ describe("testing Host", () => {
 
     // fix funding
     os56.updateFunding(daoAliens.symbol, {
-      ...daoAliens.tokenomics.funding[0],
+      ...daoAliens.funding[0],
       maxRaise: 90000,
     });
 
@@ -91,7 +110,7 @@ describe("testing Host", () => {
     os56.changePhase(daoAliens.symbol);
 
     // SEED started
-    expect(os56.getDao(daoAliens.symbol).phase).toEqual(LifecyclePhase.SEED);
+    expect(os56.getDAO(daoAliens.symbol).phase).toEqual(LifecyclePhase.SEED);
     expect(os56.tasks(daoAliens.symbol).length).toBeGreaterThan(0);
 
     // first seeder
@@ -105,7 +124,7 @@ describe("testing Host", () => {
       "https://c.c/c",
     ]) as string;
     os56.receiveVotingResults(proposalId, true);
-    expect(os56.getDao(daoAliens.symbol).socials.length).toEqual(3);
+    expect(os56.getDAO(daoAliens.symbol).socials.length).toEqual(3);
     try {
       os56.receiveVotingResults(proposalId, true);
     } catch {}
@@ -133,7 +152,7 @@ describe("testing Host", () => {
 
     // DEVELOPMENT phase started (SEED succeed)
     os56.changePhase(daoAliens.symbol);
-    expect(os56.getDao(daoAliens.symbol).phase).toEqual(
+    expect(os56.getDAO(daoAliens.symbol).phase).toEqual(
       LifecyclePhase.DEVELOPMENT,
     );
     expect(os56.tasks(daoAliens.symbol).length).toBeGreaterThan(0);
@@ -150,11 +169,16 @@ describe("testing Host", () => {
     os56.getFundingIndex(daoAliens.symbol, FundingType.TGE); // not throws error
 
     // fix units
-    proposalId = os56.updateUnits(daoAliens.symbol, [
-      {
-        ...daoAliens.units[0],
-        metaData: {
-          ...daoAliens.units[0].metaData,
+    proposalId = os56.updateUnits(
+      daoAliens.symbol,
+      [
+        {
+          ...daoAliens.units[0],
+        },
+      ],
+      [
+        {
+          ...(daoAliens.unitsMetaData[0] as IUnitMetaData),
           status: UnitStatus.LIVE,
           ui: [
             {
@@ -163,8 +187,8 @@ describe("testing Host", () => {
             },
           ],
         },
-      },
-    ]) as string;
+      ],
+    ) as string;
     os56.receiveVotingResults(proposalId, true);
 
     // add images
@@ -182,7 +206,7 @@ describe("testing Host", () => {
     proposalId = os56.updateVesting(daoAliens.symbol, [
       _generateVesting(
         "Development",
-        daoAliens.tokenomics.funding[
+        daoAliens.funding[
           os56.getFundingIndex(daoAliens.symbol, FundingType.TGE)
         ].end as number,
       ),
@@ -211,7 +235,7 @@ describe("testing Host", () => {
 
     // TGE phase started (DEVELOPMENT done)
     os56.changePhase(daoAliens.symbol);
-    expect(os56.getDao(daoAliens.symbol).phase).toEqual(LifecyclePhase.TGE);
+    expect(os56.getDAO(daoAliens.symbol).phase).toEqual(LifecyclePhase.TGE);
     expect(os56.tasks(daoAliens.symbol).length).toBeGreaterThan(0);
 
     // TGE funders
@@ -235,7 +259,7 @@ describe("testing Host", () => {
 
     // LIVE CLIFF
     os56.changePhase(daoAliens.symbol);
-    expect(os56.getDao(daoAliens.symbol).phase).toEqual(
+    expect(os56.getDAO(daoAliens.symbol).phase).toEqual(
       LifecyclePhase.LIVE_CLIFF,
     );
 
@@ -256,7 +280,7 @@ describe("testing Host", () => {
 
     // LIVE_VESTING
     os56.changePhase(daoAliens.symbol);
-    expect(os56.getDao(daoAliens.symbol).phase).toEqual(
+    expect(os56.getDAO(daoAliens.symbol).phase).toEqual(
       LifecyclePhase.LIVE_VESTING,
     );
     os56.tasks(daoAliens.symbol);
@@ -273,7 +297,7 @@ describe("testing Host", () => {
 
     // LIVE
     os56.changePhase(daoAliens.symbol);
-    expect(os56.getDao(daoAliens.symbol).phase).toEqual(LifecyclePhase.LIVE);
+    expect(os56.getDAO(daoAliens.symbol).phase).toEqual(LifecyclePhase.LIVE);
     os56.tasks(daoAliens.symbol);
 
     // try update fundings for coverage
@@ -290,7 +314,7 @@ describe("testing Host", () => {
       os56.updateVesting(daoAliens.symbol, [
         _generateVesting(
           "Development",
-          daoAliens.tokenomics.funding[
+          daoAliens.funding[
             os56.getFundingIndex(daoAliens.symbol, FundingType.TGE)
           ].end as number,
         ),
@@ -330,26 +354,30 @@ describe("testing Host", () => {
       seedToken: "/seedApes.png",
       token: "/apes.png",
     });
-    os1.updateUnits(daoApes.symbol, [
-      {
-        unitId: "aliens:os",
-        chainIds: ["1"],
-        metaData: {
+    os1.updateUnits(
+      daoApes.symbol,
+      [
+        {
+          unitId: "aliens:os",
+          chainIds: ["1"],
+        },
+      ],
+      [
+        {
           name: "DAO Factory",
           status: UnitStatus.BUILDING,
           type: UnitType.DEFI_PROTOCOL,
           revenueShare: 100,
           ui: [],
         },
-      },
-    ]);
+      ],
+    );
     os1.updateSocials(daoApes.symbol, ["https://apes.aa", "https://apes.bb"]);
     os1.updateVesting(daoApes.symbol, [
       _generateVesting(
         "Development",
-        daoAliens.tokenomics.funding[
-          os1.getFundingIndex(daoApes.symbol, FundingType.SEED)
-        ].end as number,
+        daoAliens.funding[os1.getFundingIndex(daoApes.symbol, FundingType.SEED)]
+          .end as number,
       ),
     ]);
 
@@ -383,7 +411,7 @@ describe("testing Host", () => {
     os56.warpDays(127);
 
     os1.changePhase(daoApes.symbol);
-    expect(os1.getDao(daoApes.symbol).phase).toEqual(
+    expect(os1.getDAO(daoApes.symbol).phase).toEqual(
       LifecyclePhase.SEED_FAILED,
     );
 
@@ -406,11 +434,16 @@ describe("testing Host", () => {
       xToken: "/xMACHINE.png",
       daoToken: "/MACHINE_DAO.png",
     });
-    os10.updateUnits(daoMachines.symbol, [
-      {
-        unitId: "MACHINES:MEVBOT",
-        chainIds: ["10"],
-        metaData: {
+    os10.updateUnits(
+      daoMachines.symbol,
+      [
+        {
+          unitId: "MACHINES:MEVBOT",
+          chainIds: ["10"],
+        },
+      ],
+      [
+        {
           name: "MEV searcher",
           status: UnitStatus.LIVE,
           type: UnitType.MEV_SEARCHER,
@@ -418,8 +451,8 @@ describe("testing Host", () => {
           ui: [],
           api: [],
         },
-      },
-    ]);
+      ],
+    );
     os10.updateSocials(daoMachines.symbol, [
       "https://apes.aa",
       "https://apes.bb",
@@ -427,7 +460,7 @@ describe("testing Host", () => {
     os10.updateVesting(daoMachines.symbol, [
       _generateVesting(
         "Development",
-        daoMachines.tokenomics.funding[
+        daoMachines.funding[
           os10.getFundingIndex(daoMachines.symbol, FundingType.SEED)
         ].end as number,
       ),
@@ -470,7 +503,7 @@ describe("testing Host", () => {
     // TGE FAILED
     os10.changePhase(daoMachines.symbol);
 
-    expect(os10.getDao(daoMachines.symbol).phase).toEqual(
+    expect(os10.getDAO(daoMachines.symbol).phase).toEqual(
       LifecyclePhase.DEVELOPMENT,
     );
 
@@ -485,7 +518,14 @@ describe("testing Host", () => {
     const os = new Host("146");
     os.addLiveDAO(daos[1]);
     expect(Object.keys(os.daos).length).toBe(1);
-    expect(getUnitById(daos[1].units[1].unitId)?.metaData.name).toBe("VaaS");
+    expect(
+      getDAOUnit(daos, daos[1].symbol, daos[1].units[1].unitId)?.unitId,
+    ).toBe("stability:stabilityFarm");
+    expect(
+      getDAOUnitMetaData(daos, daos[1].symbol, daos[1].units[1].unitId)?.name,
+    ).toBe("VaaS");
+
+    expect(os.getDAOMetaData(daoMetaData, daos[1].symbol));
     const roadmap = os.roadmap(daos[1].symbol);
     expect(roadmap.length).toBe(4);
     //console.log(roadmap)
@@ -496,6 +536,7 @@ describe("testing Host", () => {
     const dao = _createDAO(os);
     expect(dao.name).toBe("SpaceSwap");
     expect(os.events.length).toBe(1);
+    expect(os.getDAOMetaData(daoMetaData, dao.symbol));
 
     const funding: IFunding[] = [
       {
@@ -647,7 +688,7 @@ describe("testing Host", () => {
     os.from = "randomUserAddress1";
     os.updateSocials(dao.symbol, ["https://t.me/stabilitydao"]);
 
-    expect(os.getDao(dao.symbol).socials.length).toBe(1);
+    expect(os.getDAO(dao.symbol).socials.length).toBe(1);
     expect(os.events.length).toBe(3);
 
     try {
@@ -659,18 +700,27 @@ describe("testing Host", () => {
       "https://t.me/stabilitydao1",
     ]);
     os.receiveVotingResults(proposalId as string, true);
-    expect(os.getDao(daos[1].symbol).socials[0]).toBe(
+    expect(os.getDAO(daos[1].symbol).socials[0]).toBe(
       "https://t.me/stabilitydao1",
     );
+  });
+
+  test("getDAOMetaData", () => {
+    const os = new Host("146");
+    os.addLiveDAO(daos[0]);
+    expect(
+      os.getDAOMetaData(daoMetaData, daos[0].symbol).builderActivity?.workers
+        .length,
+    ).toBeGreaterThan(1);
   });
 
   test("get DAO", () => {
     const os = new Host("1");
     const dao = _createDAO(os);
-    os.getDao(dao.symbol);
+    os.getDAO(dao.symbol);
 
     try {
-      os.getDao("x");
+      os.getDAO("x");
       expect(0).toBe(1);
     } catch (error: Error | unknown) {
       expect((error as Error).message).toBe("DAONotFound");

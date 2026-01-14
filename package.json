@@ -1,0 +1,28 @@
+{
+  "name": "host",
+  "version": "0.1.0",
+  "description": "Host library",
+  "main": "out/index.js",
+  "types": "out/index.d.ts",
+  "repository": "https://github.com/stabilitydao/host.git",
+  "author": "Host Dev",
+  "license": "GPL-3.0",
+  "private": false,
+  "scripts": {
+    "host": "ts-node tools/overview.ts",
+    "overview": "ts-node tools/overview.ts",
+    "build": "tsc",
+    "test": "jest",
+    "coverage": "jest --collect-coverage",
+    "postbuild": "shx cp src/tokenlist.json out/"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.2.0",
+    "prettier": "^3.7.4",
+    "shx": "^0.4.0",
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

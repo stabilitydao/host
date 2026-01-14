@@ -35,6 +35,9 @@ export interface IDAOData {
 
   /** SEGMENT 2: ON-CHAIN on chains where DAO bridged */
 
+  /** Unique ID of DAO */
+  uid?: string;
+
   /** Name of the DAO, used in token names. Without DAO word. */
   name: string;
 

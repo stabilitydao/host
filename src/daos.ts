@@ -35,7 +35,7 @@ export const daos: IDAO[] = [
     deployments: {},
     units: [
       {
-        unitId: "os",
+        unitId: "core",
         metaData: {
           name: "dao.host",
           status: UnitStatus.BUILDING,
@@ -100,9 +100,11 @@ export const daos: IDAO[] = [
         "stabilitydao/stability-ui",
         "stabilitydao/stability-subgraph",
         "stabilitydao/lending-deploy",
-        "stabilitydao/stability-os",
-        "stabilitydao/stability-os-ui",
         "stabilitydao/stability-node-pro",
+        "stabilitydao/host",
+        "stabilitydao/host-contracts",
+        "stabilitydao/host-agent",
+        "stabilitydao/host-ui",
       ],
       burnRate: [
         {
@@ -308,40 +310,37 @@ export const daos: IDAO[] = [
       ],
       pools: [
         {
-          unitIds: ["stability:stabilityFarm", "stability:stabilityMarket"],
-          name: "Products",
+          // deprecated
+          unitIds: ["stability:stabilityFarm"],
+          // deprecated
+          name: "VaaS",
           label: {
-            name: "STBL:PRODUCT",
-            description: "New product request",
+            // symbol:unitName
+            name: "STBL:VaaS",
+            description: "New Stability VaaS product request / feature",
             color: "#02a3fc",
           },
-          description: "Build CVault, MetaVault, Lending market",
+          //description: "Build CVault, MetaVault, Lending market",
           artifacts: [ArtifactType.URL_UI],
         },
         {
-          unitIds: ["stability:stabilityFarm", "stability:stabilityMarket"],
-          name: "Features",
+          // deprecated
+          unitIds: ["stability:stabilityMarket"],
+          // deprecated
+          name: "Lending",
           label: {
-            name: "STBL:FEAT",
-            description: "",
+            name: "STBL:Lending",
+            description:
+              "Lending feature, product request or maintenance issue",
             color: "#3b15d2",
           },
         },
         {
-          unitIds: ["stability:stabilityFarm", "stability:stabilityMarket"],
-          name: "Maintenance",
+          unitIds: ["core"],
+          name: "Host",
           label: {
-            name: "STBL:MAINTENANCE",
-            description: "",
-            color: "#da7130",
-          },
-        },
-        {
-          unitIds: ["os"],
-          name: "Stability OS",
-          label: {
-            name: "BUILDER:OS",
-            description: "",
+            name: "HOST:dao.host",
+            description: "Building Host",
             color: "#00b243",
           },
         },

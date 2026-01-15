@@ -1,9 +1,15 @@
 {
   "name": "@stabilitydao/host",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Host library",
   "main": "out/index.js",
   "types": "out/index.d.ts",
+  "files": [
+    "out",
+    "LICENSE",
+    "README.md",
+    "package.json"
+  ],
   "repository": "https://github.com/stabilitydao/host.git",
   "author": "Host Dev",
   "license": "GPL-3.0",

@@ -8,15 +8,22 @@ import { IBuilderActivity } from "./activity/builder";
 import { Activity } from "./activity";
 import { IDAOAPIData } from "./api";
 
-export const HOST_DESCRIPTION = "Where DAOs Live & Work";
+export const HOST_DESCRIPTION = "Where True DAOs Live & Work";
+export const DAO_FEATURES: string[] = [
+  "True DAO: only holders owns, manage and earn whole value",
+  "Inter-chain setup with bridging",
+  "Decentralized fundraising",
+  "Self-developing via Builder activity",
+  "Tokenomics constructor",
+  "Deterministic managed contract addresses",
+];
 
 /**
  Represents a DAO running on Host.
 
- todo: Optimize for cross-chain
  host-contracts: `IHost.DAOData`
 
- @version 0.2.0
+ @version 0.3.0
  @alpha
  @interface
  */
@@ -93,6 +100,12 @@ export interface IDAOData {
 
   /** Deployer of a DAO have power only at DRAFT phase. */
   deployer: string;
+
+  salts: {
+    [chainId: string]: {
+      [index in ContractIndices]?: string;
+    };
+  };
 
   /** DAO custom metadata stored off-chain. */
   daoMetaDataLocation?: string; // "local","https://..."
@@ -222,7 +235,122 @@ export interface IVesting {
   start: number;
   /** End timestamp */
   end: number;
+  address?: `0x${string}`;
 }
+
+/// @notice Indices of all contracts that can be deployed by a DAO. The indices are used to pre-set salts
+export enum ContractIndices {
+  NOT_USED_0,
+  SEED_TOKEN_1,
+  TGE_TOKEN_2,
+  TOKEN_3,
+  X_TOKEN_4,
+  DAO_TOKEN_5,
+  STAKING_6,
+  RECOVERY_7,
+  TOKEN_BRIDGE_8,
+  X_TOKEN_BRIDGE_9,
+  DAO_TOKEN_BRIDGE_10,
+  VESTING_1_11,
+  VESTING_2_12,
+  VESTING_3_13,
+  VESTING_4_14,
+  VESTING_5_15,
+  VESTING_6_16,
+  VESTING_7_17,
+  VESTING_8_18,
+  VESTING_9_19,
+  VESTING_10_20,
+  REVENUE_ROUTER_21,
+
+  // add new indices here if necessary
+
+  COUNT_CONTRACT_INDICES,
+}
+
+export interface IContractIndex {
+  name: string;
+  description?: string;
+}
+
+export const daoContractIndices: {
+  [index in ContractIndices]?: IContractIndex;
+} = {
+  [ContractIndices.SEED_TOKEN_1]: {
+    name: "Seed token",
+    description: "Seed round receipt token",
+  },
+  [ContractIndices.TGE_TOKEN_2]: {
+    name: "Presale token",
+    description: "TGE pre-sale receipt token",
+  },
+  [ContractIndices.TOKEN_3]: {
+    name: "Token",
+    description: "Main tradable DAO token",
+  },
+  [ContractIndices.X_TOKEN_4]: {
+    name: "VE-token",
+    description: "VE-tokenomics entry token",
+  },
+  [ContractIndices.DAO_TOKEN_5]: {
+    name: "DAO token",
+    description: "Governance token",
+  },
+  [ContractIndices.STAKING_6]: {
+    name: "Staking",
+    description: "Staking contract",
+  },
+  [ContractIndices.RECOVERY_7]: {
+    name: "Recovery",
+    description: "Accident recovery system contract",
+  },
+  [ContractIndices.TOKEN_BRIDGE_8]: {
+    name: "Token bridge",
+    description: "Bridge for main token",
+  },
+  [ContractIndices.X_TOKEN_BRIDGE_9]: {
+    name: "VE-token bridge",
+    description: "Bridge for VE-token",
+  },
+  [ContractIndices.DAO_TOKEN_BRIDGE_10]: {
+    name: "DAO token bridge",
+    description: "Bridge for Governance token",
+  },
+  [ContractIndices.VESTING_1_11]: {
+    name: "Vesting 1",
+  },
+  [ContractIndices.VESTING_2_12]: {
+    name: "Vesting 2",
+  },
+  [ContractIndices.VESTING_3_13]: {
+    name: "Vesting 3",
+  },
+  [ContractIndices.VESTING_4_14]: {
+    name: "Vesting 4",
+  },
+  [ContractIndices.VESTING_5_15]: {
+    name: "Vesting 5",
+  },
+  [ContractIndices.VESTING_6_16]: {
+    name: "Vesting 6",
+  },
+  [ContractIndices.VESTING_7_17]: {
+    name: "Vesting 7",
+  },
+  [ContractIndices.VESTING_8_18]: {
+    name: "Vesting 8",
+  },
+  [ContractIndices.VESTING_9_19]: {
+    name: "Vesting 9",
+  },
+  [ContractIndices.VESTING_10_20]: {
+    name: "Vesting 10",
+  },
+  [ContractIndices.REVENUE_ROUTER_21]: {
+    name: "Revenue Router",
+    description: "Revenue collector and utilizer contract",
+  },
+};
 
 /**
  Deployments of running DAO on blockchains.
@@ -231,30 +359,7 @@ export interface IVesting {
  */
 export interface IDAODeployments {
   [chainId: string]: {
-    /** Seed round receipt token. */
-    seedToken?: `0x${string}`;
-    /** TGE pre-sale receipt token. */
-    tgeToken?: `0x${string}`;
-    /** Main tradable DAO token. */
-    token?: `0x${string}`;
-    /** VE-tokenomics entry token. */
-    xToken?: `0x${string}`;
-    /** Staking contract. */
-    staking?: `0x${string}`;
-    /** Governance token. */
-    daoToken?: `0x${string}`;
-    /** Revenue utilization and distributing contract. */
-    revenueRouter?: `0x${string}`;
-    /** Accident recovery system contract. */
-    recovery?: `0x${string}`;
-    /** Set of vesting contracts. */
-    vesting?: { [name: string]: `0x${string}` };
-    /** Bridge for Token */
-    tokenBridge?: `0x${string}`;
-    /** Bridge for XToken */
-    xTokenBridge?: `0x${string}`;
-    /** Bridge for Governance token */
-    daoTokenBridge?: `0x${string}`;
+    [index in ContractIndices]?: `0x${string}`;
   };
 }
 
@@ -431,6 +536,7 @@ export class Host {
       vesting: [],
       governanceSettings: {},
       deployer: this.from,
+      salts: {},
       daoMetaDataLocation: metaDataLocation,
       unitsMetaData: [],
     };
@@ -499,7 +605,7 @@ export class Host {
 
       // deploy seedToken
       this.daos[symbol].deployments[this.chainId] = {
-        seedToken: "0xProxyDeployed",
+        [ContractIndices.SEED_TOKEN_1]: "0xProxyDeployed",
       };
 
       this.daos[symbol].phase = LifecyclePhase.SEED;
@@ -525,7 +631,7 @@ export class Host {
       }
 
       // deploy tgeToken
-      this.daos[symbol].deployments[this.chainId].tgeToken =
+      this.daos[symbol].deployments[this.chainId][ContractIndices.TGE_TOKEN_2] =
         "0xProxyDeployedTge";
 
       this.daos[symbol].phase = LifecyclePhase.TGE;
@@ -540,11 +646,15 @@ export class Host {
 
       if (success) {
         // deploy token, xToken, staking, daoToken
-        this.daos[symbol].deployments[this.chainId].token = "0xProxyToken";
-        this.daos[symbol].deployments[this.chainId].xToken = "0xProxyXToken";
-        this.daos[symbol].deployments[this.chainId].staking = "0xProxyStaking";
-        this.daos[symbol].deployments[this.chainId].daoToken =
-          "0xProxyDAOToken";
+        this.daos[symbol].deployments[this.chainId][ContractIndices.TOKEN_3] =
+          "0xProxyToken";
+        this.daos[symbol].deployments[this.chainId][ContractIndices.X_TOKEN_4] =
+          "0xProxyXToken";
+        this.daos[symbol].deployments[this.chainId][ContractIndices.STAKING_6] =
+          "0xProxyStaking";
+        this.daos[symbol].deployments[this.chainId][
+          ContractIndices.DAO_TOKEN_5
+        ] = "0xProxyDAOToken";
 
         // todo deploy vesting contracts and allocate token
 
@@ -988,11 +1098,12 @@ export class Host {
         LifecyclePhase.TGE,
       ].includes(dao.phase)
     ) {
-      return dao.deployments[getChainByName(dao.initialChain).chainId]
-        .seedToken as string;
+      return dao.deployments[getChainByName(dao.initialChain).chainId][
+        ContractIndices.SEED_TOKEN_1
+      ] as string;
     }
 
-    return dao.deployments[this.chainId]?.daoToken as string;
+    return dao.deployments[this.chainId][ContractIndices.DAO_TOKEN_5] as string;
   }
 
   getFundingIndex(symbol: string, type: FundingType) {

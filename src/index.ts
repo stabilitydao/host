@@ -21,6 +21,8 @@ import {
   IDAOData,
   IUnit,
   IUnitMetaData,
+  IContractIndex,
+  daoContractIndices,
 } from "./host";
 import { daos } from "./storage/daos";
 import { daoMetaData } from "./storage/daoMetaData";
@@ -57,4 +59,6 @@ export type {
   IGithubIssue,
   RevenueChart,
   TokenData,
+  IContractIndex,
+  daoContractIndices,
 };

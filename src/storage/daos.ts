@@ -1,4 +1,5 @@
 import {
+  ContractIndices,
   FundingType,
   IDAOData,
   LifecyclePhase,
@@ -11,7 +12,7 @@ import { Activity } from "../activity";
 export const daos: IDAOData[] = [
   {
     phase: LifecyclePhase.DRAFT,
-    name: "Host Dev",
+    name: "DAO Host",
     symbol: "HOST",
     socials: ["https://t.me/dao_host"],
     activity: [Activity.BUILDER, Activity.DEFI],
@@ -56,6 +57,7 @@ export const daos: IDAOData[] = [
     vesting: [],
     governanceSettings: {},
     deployer: "0x0",
+    salts: {},
     daoMetaDataLocation: "local",
     unitsMetaData: [
       {
@@ -91,30 +93,50 @@ export const daos: IDAOData[] = [
     },
     deployments: {
       ["146"]: {
-        tgeToken: "0x4D61CB8553bB5Db02DF3bdc6CDa88AA85b32224b",
-        token: "0x78a76316F66224CBaCA6e70acB24D5ee5b2Bd2c7",
-        xToken: "0x902215dd96a291b256a3aef6c4dee62d2a9b80cb",
-        staking: "0x17a7cf838a7c91de47552a9f65822b547f9a6997",
-        daoToken: "0x77773Cb473aD1bfE991bA299a127F64b45C17777",
-        revenueRouter: "0x23b8cc22c4c82545f4b451b11e2f17747a730810",
-        recovery: "0xB8d6019eD82a9e6216c9Bf87cAf145fFe4439b40",
-        vesting: {
-          ["Investors"]: "0x1a125ff7efdB54dc9EFB4Ad90C552C4C8822b212",
-          ["Foundation"]: "0x8C42C261A3104cEEFBb388CFd6C1f0E7c9F22062",
-          ["Community"]: "0xEF2CE83527FAE22E0012Efc4d64987C1a51448c5",
-          ["Team"]: "0xe6C2AA6e67EF1B806B9Daec7147b113051a445E8",
-        },
-        tokenBridge: "0xD6a8b05f08834Ed2f205E3d591CD6D1A84b7C19B",
-        xTokenBridge: "0x533A0c7869e36D1640D4058Bac4604DB6b4d7AD5",
+        [ContractIndices.TGE_TOKEN_2]:
+          "0x4D61CB8553bB5Db02DF3bdc6CDa88AA85b32224b",
+        [ContractIndices.TOKEN_3]: "0x78a76316F66224CBaCA6e70acB24D5ee5b2Bd2c7",
+        [ContractIndices.X_TOKEN_4]:
+          "0x902215dd96a291b256a3aef6c4dee62d2a9b80cb",
+        [ContractIndices.STAKING_6]:
+          "0x17a7cf838a7c91de47552a9f65822b547f9a6997",
+        [ContractIndices.DAO_TOKEN_5]:
+          "0x77773Cb473aD1bfE991bA299a127F64b45C17777",
+        [ContractIndices.REVENUE_ROUTER_21]:
+          "0x23b8cc22c4c82545f4b451b11e2f17747a730810",
+        [ContractIndices.RECOVERY_7]:
+          "0xB8d6019eD82a9e6216c9Bf87cAf145fFe4439b40",
+        // Investors
+        [ContractIndices.VESTING_1_11]:
+          "0x1a125ff7efdB54dc9EFB4Ad90C552C4C8822b212",
+        // Foundation
+        [ContractIndices.VESTING_2_12]:
+          "0x8C42C261A3104cEEFBb388CFd6C1f0E7c9F22062",
+        // Community
+        [ContractIndices.VESTING_3_13]:
+          "0xEF2CE83527FAE22E0012Efc4d64987C1a51448c5",
+        // Team
+        [ContractIndices.VESTING_4_14]:
+          "0xe6C2AA6e67EF1B806B9Daec7147b113051a445E8",
+        [ContractIndices.TOKEN_BRIDGE_8]:
+          "0xD6a8b05f08834Ed2f205E3d591CD6D1A84b7C19B",
+        [ContractIndices.X_TOKEN_BRIDGE_9]:
+          "0x533A0c7869e36D1640D4058Bac4604DB6b4d7AD5",
       },
       ["9745"]: {
-        token: "0xfdf91362B7E9330F232e500c0236a02B0DE3e492",
-        xToken: "0xF40D0724599282CaF9dfb66feB630e936bC0CFBE",
-        staking: "0x601572b91DC054Be500392A6d3e15c690140998D",
-        revenueRouter: "0x5AC5b2740F77200CCe6562795cFcf4c3c2aC3745",
-        daoToken: "0x87C51aa090587790A5298ea4C2d0DBbcCD0026A6",
-        tokenBridge: "0xfdf91362B7E9330F232e500c0236a02B0DE3e492",
-        xTokenBridge: "0x4E3F0A27bbF443Ba81FCf17E28F4100f35b1b51B",
+        [ContractIndices.TOKEN_3]: "0xfdf91362B7E9330F232e500c0236a02B0DE3e492",
+        [ContractIndices.X_TOKEN_4]:
+          "0xF40D0724599282CaF9dfb66feB630e936bC0CFBE",
+        [ContractIndices.STAKING_6]:
+          "0x601572b91DC054Be500392A6d3e15c690140998D",
+        [ContractIndices.REVENUE_ROUTER_21]:
+          "0x5AC5b2740F77200CCe6562795cFcf4c3c2aC3745",
+        [ContractIndices.DAO_TOKEN_5]:
+          "0x87C51aa090587790A5298ea4C2d0DBbcCD0026A6",
+        [ContractIndices.TOKEN_BRIDGE_8]:
+          "0xfdf91362B7E9330F232e500c0236a02B0DE3e492",
+        [ContractIndices.X_TOKEN_BRIDGE_9]:
+          "0x4E3F0A27bbF443Ba81FCf17E28F4100f35b1b51B",
       },
     },
     chainSettings: {
@@ -160,24 +182,28 @@ export const daos: IDAOData[] = [
         allocation: 20000000,
         start: 1756954800,
         end: 1788490800,
+        address: "0x1a125ff7efdB54dc9EFB4Ad90C552C4C8822b212",
       },
       {
         name: "Foundation",
         allocation: 30000000,
         start: 1756954800,
         end: 1883098800,
+        address: "0x8C42C261A3104cEEFBb388CFd6C1f0E7c9F22062",
       },
       {
         name: "Community",
         allocation: 19972000,
         start: 1756954800,
         end: 1883098800,
+        address: "0xEF2CE83527FAE22E0012Efc4d64987C1a51448c5",
       },
       {
         name: "Team",
         allocation: 20000000,
         start: 1756954800,
         end: 1883098800,
+        address: "0xe6C2AA6e67EF1B806B9Daec7147b113051a445E8",
       },
     ],
     governanceSettings: {
@@ -185,6 +211,7 @@ export const daos: IDAOData[] = [
       ttBribe: 10,
     },
     deployer: "0x0",
+    salts: {},
     daoMetaDataLocation: "local",
     unitsMetaData: [
       {
@@ -249,7 +276,7 @@ export const daos: IDAOData[] = [
   },
   {
     phase: LifecyclePhase.DRAFT,
-    name: "MEV Fighter",
+    name: "MEV Bot",
     symbol: "MEVBOT",
     socials: [],
     activity: [Activity.BUILDER, Activity.MEV],
@@ -288,6 +315,7 @@ export const daos: IDAOData[] = [
     vesting: [],
     governanceSettings: {},
     deployer: "0x0",
+    salts: {},
     daoMetaDataLocation: "local",
     unitsMetaData: [
       {

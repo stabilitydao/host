@@ -9,6 +9,7 @@ import {
   LifecyclePhase,
 } from "../src";
 import {
+  ContractIndices,
   FundingType,
   getDAOUnitMetaData,
   IFunding,
@@ -215,7 +216,7 @@ describe("testing Host", () => {
 
     // owner of DAO is seed token
     expect(os56.getDaoOwner(daoAliens.symbol)).toBe(
-      daoAliens.deployments[os56.chainId].seedToken,
+      daoAliens.deployments[os56.chainId][ContractIndices.SEED_TOKEN_1],
     );
 
     // try fund on not funding phase
@@ -265,7 +266,7 @@ describe("testing Host", () => {
 
     // owner of DAO is DAO token
     expect(os56.getDaoOwner(daoAliens.symbol)).toBe(
-      daoAliens.deployments[os56.chainId].daoToken,
+      daoAliens.deployments[os56.chainId][ContractIndices.DAO_TOKEN_5],
     );
 
     try {
@@ -663,7 +664,7 @@ describe("testing Host", () => {
     // force phase change
     os.daos[Object.keys(os.daos)[0]].deployments = {
       "1": {
-        seedToken: "0x1",
+        [ContractIndices.SEED_TOKEN_1]: "0x1",
       },
     };
     os.daos[Object.keys(os.daos)[0]].phase = LifecyclePhase.SEED;
@@ -694,7 +695,7 @@ describe("testing Host", () => {
     try {
       os.updateSocials(daos[1].symbol, ["https://t.me/stabilitydao"]);
     } catch {}
-    os.from = daos[1].deployments["146"].daoToken as string;
+    os.from = daos[1].deployments["146"][ContractIndices.DAO_TOKEN_5] as string;
     os.chainId = "146";
     let proposalId = os.updateSocials(daos[1].symbol, [
       "https://t.me/stabilitydao1",

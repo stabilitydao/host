@@ -1,6 +1,6 @@
 {
   "name": "@stabilitydao/host",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "Host library",
   "main": "out/index.js",
   "types": "out/index.d.ts",

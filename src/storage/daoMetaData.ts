@@ -226,7 +226,16 @@ export const daoMetaData: { [symbol: string]: IDAOMetaData } = {
       ],
       pools: [
         {
-          // deprecated
+          unitIds: ["core"],
+          name: "Host",
+          label: {
+            name: "HOST:dao.host",
+            description: "Building Host",
+            color: "#00b243",
+          },
+        },
+        {
+          // deprecated: Pool setup must be in `IUnitMetaData`
           unitIds: ["stability:stabilityFarm"],
           // deprecated
           name: "VaaS",
@@ -249,15 +258,6 @@ export const daoMetaData: { [symbol: string]: IDAOMetaData } = {
             description:
               "Lending feature, product request or maintenance issue",
             color: "#3b15d2",
-          },
-        },
-        {
-          unitIds: ["core"],
-          name: "Host",
-          label: {
-            name: "HOST:dao.host",
-            description: "Building Host",
-            color: "#00b243",
           },
         },
       ],

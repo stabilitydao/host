@@ -97,7 +97,7 @@ export const chains: { [chainId: string]: IChain } = {
   "1": {
     name: ChainName.ETHEREUM,
     chainId: 1,
-    status: ChainStatus.NOT_SUPPORTED,
+    status: ChainStatus.DEVELOPMENT,
     img: "ethereum.svg",
   },
   "10": {

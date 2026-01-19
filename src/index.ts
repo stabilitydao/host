@@ -23,6 +23,8 @@ import {
   IUnitMetaData,
   IContractIndex,
   daoContractIndices,
+  HOST_DESCRIPTION,
+  DAO_FEATURES,
 } from "./host";
 import { daos } from "./storage/daos";
 import { daoMetaData } from "./storage/daoMetaData";
@@ -61,4 +63,6 @@ export type {
   TokenData,
   IContractIndex,
   daoContractIndices,
+  HOST_DESCRIPTION,
+  DAO_FEATURES,
 };

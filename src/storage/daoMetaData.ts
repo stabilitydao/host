@@ -9,6 +9,7 @@ export const daoMetaData: { [symbol: string]: IDAOMetaData } = {
         "matic:0x36780E69D38c8b175761c6C5F8eD42E61ee490E9",
         "sonic:0xF564EBaC1182578398E94868bea1AbA6ba339652",
         "avax:0x06111E02BEb85B57caebEf15F5f90Bc82D54da3A",
+        "plasma:0xE929438B5B53984FdBABf8562046e141e90E8099",
       ],
       repo: [
         "stabilitydao/stability",

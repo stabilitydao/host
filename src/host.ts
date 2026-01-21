@@ -19,6 +19,8 @@ export const DAO_FEATURES: string[] = [
   "Proper token launch flow to get cg/cmc and wallets listings",
   "Deterministic managed contract addresses",
 ];
+export const STATIC_BASE_URL: `https://${string}` =
+  "https://raw.githubusercontent.com/stabilitydao/.github/main";
 
 /**
  Represents a DAO running on Host.

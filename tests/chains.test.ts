@@ -4,7 +4,9 @@ import {
   chains,
   ChainStatus,
   chainStatusInfo,
+  getChainImage,
 } from "../src";
+import { STATIC_BASE_URL } from "../src/host";
 
 describe("testing chains", () => {
   test("getChainByName", () => {
@@ -18,5 +20,13 @@ describe("testing chains", () => {
   test("chains, chainStatusInfo", () => {
     expect(chains["2046399126"].status).toEqual(ChainStatus.NOT_SUPPORTED);
     expect(chainStatusInfo[ChainStatus.SUPPORTED].title).toEqual("Supported");
+  });
+  test("getChainImage", () => {
+    expect(getChainImage("204111116399126")).toEqual(
+      `${STATIC_BASE_URL}/unknown.png`,
+    );
+    expect(getChainImage("1")).toEqual(
+      `${STATIC_BASE_URL}/chains/ethereum.svg`,
+    );
   });
 });

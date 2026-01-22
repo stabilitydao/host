@@ -1375,7 +1375,7 @@ export function getBridgeTokens(daos: IDAOData[]): IBridgingTokens {
           if (tokenData) {
             r[chainId].push({
               tokenData,
-              bridge: xTokenAddress,
+              bridge: xTokenBridge,
             });
           }
         }

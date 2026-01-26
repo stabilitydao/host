@@ -1,7 +1,7 @@
-import { daos, tokenlist } from "../src";
+import { createCanvas, loadImage } from "canvas";
 import * as fs from "fs";
 import * as path from "path";
-import { createCanvas, loadImage } from "canvas";
+import { daos } from "../src";
 
 const tempDir = "./temp";
 const imagesDir = "./temp/images";

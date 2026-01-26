@@ -1,4 +1,4 @@
-# DAO.Host: Where DAOs Live & Work
+# DAO.Host: Where True DAOs Live & Work
 
 ![GitHub Tag](https://img.shields.io/github/v/tag/stabilitydao/host)
 ![NPM Version](https://img.shields.io/npm/v/%40stabilitydao%2Fhost?label=NPM%20version)

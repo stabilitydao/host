@@ -7,6 +7,7 @@ import { IAgent } from "./agents";
 import { IBuilderActivity } from "./activity/builder";
 import { Activity } from "./activity";
 import { IDAOAPIData } from "./api";
+import { getTokenData, TokenData } from "./assets";
 
 export const HOST_DESCRIPTION = "Where True DAOs Live & Work";
 export const DAO_FEATURES: string[] = [
@@ -15,8 +16,11 @@ export const DAO_FEATURES: string[] = [
   "Decentralized fundraising",
   "Self-developing via Builder activity",
   "Tokenomics constructor",
+  "Proper token launch flow to get cg/cmc and wallets listings",
   "Deterministic managed contract addresses",
 ];
+export const STATIC_BASE_URL: `https://${string}` =
+  "https://raw.githubusercontent.com/stabilitydao/.github/main";
 
 /**
  Represents a DAO running on Host.
@@ -1329,4 +1333,54 @@ export function getDAOUnitMetaData(
       }
     }
   }
+}
+
+export interface IBridgingTokens {
+  [chainId: string]: {
+    tokenData: TokenData;
+    bridge: `0x${string}`;
+  }[];
+}
+
+export function getBridgeTokens(daos: IDAOData[]): IBridgingTokens {
+  const r: IBridgingTokens = {};
+  for (const dao of daos) {
+    const deploymentChainIds = Object.keys(dao.deployments);
+    if (deploymentChainIds.length > 1) {
+      for (const chainId of deploymentChainIds) {
+        const tokenAddress = dao.deployments[chainId][ContractIndices.TOKEN_3];
+        const tokenBridge =
+          dao.deployments[chainId][ContractIndices.TOKEN_BRIDGE_8];
+        const xTokenAddress =
+          dao.deployments[chainId][ContractIndices.X_TOKEN_4];
+        const xTokenBridge =
+          dao.deployments[chainId][ContractIndices.X_TOKEN_BRIDGE_9];
+
+        if (tokenAddress && tokenBridge) {
+          const tokenData = getTokenData(chainId, tokenAddress);
+          if (tokenData) {
+            if (!r[chainId]) {
+              r[chainId] = [];
+            }
+
+            r[chainId].push({
+              tokenData,
+              bridge: tokenBridge,
+            });
+          }
+        }
+
+        if (xTokenAddress && xTokenBridge) {
+          const tokenData = getTokenData(chainId, xTokenAddress);
+          if (tokenData) {
+            r[chainId].push({
+              tokenData,
+              bridge: xTokenBridge,
+            });
+          }
+        }
+      }
+    }
+  }
+  return r;
 }

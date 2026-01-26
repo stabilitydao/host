@@ -6,6 +6,7 @@ import {
   IChain,
   ChainStatusInfo,
   getChainByName,
+  getChainImage,
 } from "./chains";
 import tokenlist from "./tokenlist.json";
 import { assets, getAsset, getTokenData, TokenData } from "./assets";
@@ -25,10 +26,11 @@ import {
   daoContractIndices,
   HOST_DESCRIPTION,
   DAO_FEATURES,
+  STATIC_BASE_URL,
 } from "./host";
 import { daos } from "./storage/daos";
 import { daoMetaData } from "./storage/daoMetaData";
-import { RevenueChart } from "./api";
+import { RevenueChart, IHostAgentMemory } from "./api";
 
 export {
   chains,
@@ -49,6 +51,11 @@ export {
   getDAOUnit,
   getDAOUnitMetaData,
   getTokenData,
+  daoContractIndices,
+  HOST_DESCRIPTION,
+  DAO_FEATURES,
+  getChainImage,
+  STATIC_BASE_URL,
 };
 
 export type {
@@ -62,7 +69,5 @@ export type {
   RevenueChart,
   TokenData,
   IContractIndex,
-  daoContractIndices,
-  HOST_DESCRIPTION,
-  DAO_FEATURES,
+  IHostAgentMemory,
 };

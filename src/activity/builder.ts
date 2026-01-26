@@ -101,6 +101,20 @@ export interface IGithubIssue {
   body?: string;
 }
 
+export interface IGithubIssueV2 {
+  repo: string;
+  id: number;
+  title: string;
+  labels: IGithubLabel[];
+  assignees: IGithubUser[];
+  tasks?: {
+    done: boolean;
+    name: string;
+    category?: string;
+  }[];
+  body?: string;
+}
+
 export const enum ArtifactType {
   URL_UI = "URL to UI page",
   URL_RELEASE = "Github package release link",
@@ -134,6 +148,22 @@ export interface IBuildersMemory {
       [conveyorName: string]: {
         [taskId: string]: {
           [stepName: string]: IGithubIssue[];
+        };
+      };
+    };
+  };
+}
+
+export interface IBuildersMemoryV2 {
+  [tokenSymbol: string]: {
+    openIssues: {
+      total: { [repo: string]: number };
+      pools: { [poolName: string]: IGithubIssueV2[] };
+    };
+    conveyors: {
+      [conveyorName: string]: {
+        [taskId: string]: {
+          [stepName: string]: IGithubIssueV2[];
         };
       };
     };

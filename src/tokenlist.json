@@ -2,10 +2,10 @@
   "name": "Host Token List",
   "logoURI": "https://dao.host/logo.svg",
   "keywords": [],
-  "timestamp": "2026-01-13T00:00:00+00:00",
+  "timestamp": "2026-01-20T00:00:00+00:00",
   "version": {
     "major": 1,
-    "minor": 0,
+    "minor": 1,
     "patch": 0
   },
   "tags": {
@@ -1927,11 +1927,38 @@
     },
     {
       "chainId": 146,
+      "address": "0x902215dd96a291b256a3aef6c4dee62d2a9b80cb",
+      "symbol": "xSTBL",
+      "name": "xStability",
+      "decimals": 18,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/os/xstbl.png",
+      "tags": []
+    },
+    {
+      "chainId": 146,
       "address": "0x77773Cb473aD1bfE991bA299a127F64b45C17777",
       "symbol": "STBL_DAO",
       "name": "Stability DAO",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/STBL_DAO.png",
+      "tags": []
+    },
+    {
+      "chainId": 9745,
+      "address": "0xfdf91362B7E9330F232e500c0236a02B0DE3e492",
+      "symbol": "STBL",
+      "name": "Stability",
+      "decimals": 18,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/stbl.png",
+      "tags": ["bridged"]
+    },
+    {
+      "chainId": 9745,
+      "address": "0xF40D0724599282CaF9dfb66feB630e936bC0CFBE",
+      "symbol": "xSTBL",
+      "name": "xStability",
+      "decimals": 18,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/os/xstbl.png",
       "tags": []
     }
   ]

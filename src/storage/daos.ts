@@ -17,7 +17,7 @@ export const daos: IDAOData[] = [
     socials: ["https://t.me/dao_host"],
     activity: [Activity.BUILDER, Activity.DEFI],
     images: {
-      token: "/builder.png",
+      token: "/HOST.png",
     },
     deployments: {},
     chainSettings: {
@@ -87,6 +87,7 @@ export const daos: IDAOData[] = [
     ],
     activity: [Activity.DEFI],
     images: {
+      tgeToken: "/saleSTBL.png",
       token: "/stbl.svg",
       xToken: "/xstbl.png",
       daoToken: "/STBL_DAO.png",
@@ -281,7 +282,7 @@ export const daos: IDAOData[] = [
     socials: [],
     activity: [Activity.BUILDER, Activity.MEV],
     images: {
-      token: "/mevbot.jpg",
+      token: "/MEVBOT.png",
     },
     deployments: {},
     chainSettings: {

@@ -590,9 +590,20 @@ export const assets: Asset[] = [
   {
     addresses: {
       "146": "0x78a76316F66224CBaCA6e70acB24D5ee5b2Bd2c7",
+      "9745": "0xfdf91362B7E9330F232e500c0236a02B0DE3e492",
     },
     symbol: "STBL",
     description: "AI-driven Asset Manager",
+    website: "https://stability.farm",
+    color: "#5b32f1",
+  },
+  {
+    addresses: {
+      "146": "0x902215dd96a291b256a3aef6c4dee62d2a9b80cb",
+      "9745": "0xF40D0724599282CaF9dfb66feB630e936bC0CFBE",
+    },
+    symbol: "xSTBL",
+    description: "VE-token of STBL",
     website: "https://stability.farm",
     color: "#5b32f1",
   },

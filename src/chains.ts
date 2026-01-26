@@ -1,10 +1,12 @@
 /** Blockchains data */
+import { STATIC_BASE_URL } from "./host";
 
 export interface IChain {
   name: ChainName;
   chainId: number | string;
   status: ChainStatus;
   img: string;
+  explorer?: `https://${string}`;
 }
 
 export enum ChainStatus {
@@ -99,6 +101,7 @@ export const chains: { [chainId: string]: IChain } = {
     chainId: 1,
     status: ChainStatus.DEVELOPMENT,
     img: "ethereum.svg",
+    explorer: "https://etherscan.io",
   },
   "10": {
     name: ChainName.OPTIMISM,
@@ -171,12 +174,14 @@ export const chains: { [chainId: string]: IChain } = {
     chainId: 137,
     status: ChainStatus.NOT_SUPPORTED,
     img: "polygon.svg",
+    explorer: "https://polygonscan.com",
   },
   "146": {
     name: ChainName.SONIC,
     chainId: 146,
     status: ChainStatus.DEVELOPMENT,
     img: "sonic.png",
+    explorer: "https://sonicscan.org",
   },
   "169": {
     name: ChainName.MANTA,
@@ -393,6 +398,7 @@ export const chains: { [chainId: string]: IChain } = {
     chainId: 9745,
     status: ChainStatus.DEVELOPMENT,
     img: "plasma.webp",
+    explorer: "https://plasmascan.to",
   },
   "9790": {
     name: ChainName.CARBON,
@@ -465,6 +471,7 @@ export const chains: { [chainId: string]: IChain } = {
     chainId: 43114,
     status: ChainStatus.NOT_SUPPORTED,
     img: "avalanche.png",
+    explorer: "https://snowtrace.io",
   },
   "48900": {
     name: ChainName.ZIRCUIT,
@@ -601,4 +608,12 @@ export const getChainByName = (chainName: ChainName): IChain => {
     }
   }
   throw new Error(`Incorrect chain name ${chainName}`);
+};
+
+export const getChainImage = (chainId: string): `https://${string}` => {
+  const chain = chains[chainId];
+  if (chain) {
+    return `${STATIC_BASE_URL}/chains/${chain.img}`;
+  }
+  return `${STATIC_BASE_URL}/unknown.png`;
 };

@@ -52,7 +52,8 @@ async function drawImages() {
       ctx.fillText(dao.symbol, canvas.width / 2, logoY + logoSize + 60);
 
       ctx.font = "36px Arial";
-      ctx.fillText(`${dao.name} DAO`, canvas.width / 2, logoY + logoSize + 120);
+      const text = dao.name.match(/dao/i) ? dao.name : `${dao.name} DAO`;
+      ctx.fillText(text, canvas.width / 2, logoY + logoSize + 120);
 
       const buffer = canvas.toBuffer("image/png");
       const fileName = `${dao.symbol.toLowerCase()}-dao.png`;
@@ -60,7 +61,7 @@ async function drawImages() {
       const filePath = path.join(imagesDir, fileName);
       fs.writeFileSync(filePath, buffer);
 
-      console.log(`Generated image for ${dao.name} DAO: ${filePath}`);
+      console.log(`Generated image for ${text}: ${filePath}`);
     } catch (error) {
       console.log(`Error generating image for ${dao.name} DAO:`, error);
     }

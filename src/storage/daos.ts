@@ -14,7 +14,7 @@ export const daos: IDAOData[] = [
     phase: LifecyclePhase.DRAFT,
     name: "DAO Host",
     symbol: "HOST",
-    socials: ["https://t.me/dao_host"],
+    socials: ["https://x.com/dao_host", "https://t.me/dao_host"],
     activity: [Activity.BUILDER, Activity.DEFI],
     images: {
       token: "/HOST.png",
@@ -131,7 +131,7 @@ export const daos: IDAOData[] = [
         [ContractIndices.STAKING_6]:
           "0x601572b91DC054Be500392A6d3e15c690140998D",
         [ContractIndices.REVENUE_ROUTER_21]:
-          "0x5AC5b2740F77200CCe6562795cFcf4c3c2aC3745",
+          "0xAf95468B1a624605bbFb862B0FB6e9C73Ad847b8",
         [ContractIndices.DAO_TOKEN_5]:
           "0x87C51aa090587790A5298ea4C2d0DBbcCD0026A6",
         [ContractIndices.TOKEN_BRIDGE_8]:

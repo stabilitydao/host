@@ -5,8 +5,6 @@ import { daos, STATIC_BASE_URL } from "../src";
 
 const tempDir = "./temp";
 const imagesDir = "./temp/images";
-const logoPrefix =
-  "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/";
 
 async function drawImages() {
   if (!fs.existsSync(tempDir)) {

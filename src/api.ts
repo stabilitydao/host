@@ -85,6 +85,17 @@ export interface IDAOAPIDataV2 {
   socialUsers: {
     [socialLink: string]: number;
   };
+  holders?: IDAOHolders;
+}
+
+export interface IDAOHolders {
+  [addr: string]: IDAOHoldings;
+}
+
+export interface IDAOHoldings {
+  address: `0x${string}`;
+  balance: string;
+  percentage?: string;
 }
 
 /**

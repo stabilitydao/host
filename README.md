@@ -27,6 +27,7 @@ yarn add @stabilitydao/host
 ## Tools
 
 ```shell
+yarn overview
 yarn draw:dao
 ```
 

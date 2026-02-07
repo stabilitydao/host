@@ -2,10 +2,10 @@
   "name": "Host Token List",
   "logoURI": "https://dao.host/logo.svg",
   "keywords": [],
-  "timestamp": "2026-01-20T00:00:00+00:00",
+  "timestamp": "2026-02-08T00:00:00+00:00",
   "version": {
     "major": 1,
-    "minor": 1,
+    "minor": 2,
     "patch": 0
   },
   "tags": {
@@ -114,7 +114,7 @@
       "name": "Wrapped liquid staked Ether 2.0",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/wstETH.svg",
-      "tags": ["wNative", "eth"]
+      "tags": ["lst", "eth"]
     },
     {
       "chainId": 1,
@@ -139,7 +139,7 @@
       "name": "Coinbase Wrapped Staked ETH",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/cbETH.svg",
-      "tags": ["eth"]
+      "tags": ["lst", "eth"]
     },
     {
       "chainId": 1,
@@ -148,7 +148,7 @@
       "name": "Rocket Pool ETH",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/rETH.svg",
-      "tags": ["eth"]
+      "tags": ["lst", "eth"]
     },
     {
       "chainId": 1,
@@ -304,7 +304,7 @@
       "name": "Wrapped eETH",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/weETH.svg",
-      "tags": ["eth", "wNative"]
+      "tags": ["lst", "eth"]
     },
     {
       "chainId": 1,
@@ -313,7 +313,7 @@
       "name": "Staked ETH",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/osETH.svg",
-      "tags": ["eth"]
+      "tags": ["lst", "eth"]
     },
     {
       "chainId": 1,
@@ -331,7 +331,7 @@
       "name": "ETHx",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/ETHx.svg",
-      "tags": ["eth"]
+      "tags": ["lst", "eth"]
     },
     {
       "chainId": 1,
@@ -356,7 +356,8 @@
       "symbol": "cbBTC",
       "name": "Coinbase Wrapped BTC",
       "decimals": 8,
-      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/cbBTC.svg"
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/cbBTC.svg",
+      "tags": ["lst", "btc"]
     },
     {
       "chainId": 1,
@@ -372,7 +373,8 @@
       "symbol": "rsETH",
       "name": "rsETH",
       "decimals": 18,
-      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/rsETH.svg"
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/rsETH.svg",
+      "tags": ["lst", "eth"]
     },
     {
       "chainId": 1,
@@ -380,7 +382,8 @@
       "symbol": "LBTC",
       "name": "Lombard Staked Bitcoin",
       "decimals": 8,
-      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/LBTC.svg"
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/LBTC.svg",
+      "tags": ["lst", "btc"]
     },
     {
       "chainId": 1,
@@ -388,7 +391,8 @@
       "symbol": "eBTC",
       "name": "ether.fi BTC",
       "decimals": 8,
-      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/eBTC.svg"
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/eBTC.svg",
+      "tags": ["lst", "btc"]
     },
     {
       "chainId": 1,
@@ -452,7 +456,8 @@
       "symbol": "FBTC",
       "name": "Fire Bitcoin",
       "decimals": 8,
-      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/FBTC.svg"
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/FBTC.svg",
+      "tags": ["btc"]
     },
     {
       "chainId": 1,
@@ -484,7 +489,8 @@
       "symbol": "tETH",
       "name": "Treehouse ETH",
       "decimals": 18,
-      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/tETH.svg"
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/tETH.svg",
+      "tags": ["lst", "eth"]
     },
     {
       "chainId": 1,
@@ -492,7 +498,8 @@
       "symbol": "ezETH",
       "name": "Renzo Restaked ETH",
       "decimals": 18,
-      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/ezETH.svg"
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/ezETH.svg",
+      "tags": ["lst", "eth"]
     },
     {
       "chainId": 1,
@@ -640,7 +647,7 @@
       "name": "Wrapped BTC",
       "decimals": 8,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/btc.jpg",
-      "tags": ["bridged"]
+      "tags": ["bridged", "btc"]
     },
     {
       "chainId": 137,
@@ -694,7 +701,7 @@
       "name": "Wrapped Ether",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/eth.jpg",
-      "tags": ["bridged"]
+      "tags": ["bridged", "eth"]
     },
     {
       "chainId": 137,
@@ -703,7 +710,7 @@
       "name": "(PoS) Wrapped BTC",
       "decimals": 8,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/btc.jpg",
-      "tags": ["bridged"]
+      "tags": ["bridged", "btc"]
     },
     {
       "chainId": 137,
@@ -737,7 +744,7 @@
       "name": "Wrapped liquid staked Ether 2.0 (PoS)",
       "decimals": 18,
       "logoURI": "https://polygonscan.com/token/images/wsteth_32.png",
-      "tags": ["bridged"]
+      "tags": ["bridged", "lst", "eth"]
     },
     {
       "chainId": 8453,
@@ -746,7 +753,7 @@
       "name": "Wrapped Ether",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/eth.jpg",
-      "tags": ["wNative"]
+      "tags": ["wNative", "eth"]
     },
     {
       "chainId": 8453,
@@ -755,7 +762,7 @@
       "name": "Wrapped liquid staked Ether 2.0",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/wsteth.jpg",
-      "tags": ["lst", "bridged"]
+      "tags": ["lst", "bridged", "eth"]
     },
     {
       "chainId": 8453,
@@ -764,7 +771,7 @@
       "name": "Coinbase Wrapped Staked ETH",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/network/ethereum/0xBe9895146f7AF43049ca1c1AE358B0541Ea49704.jpg",
-      "tags": ["lst"]
+      "tags": ["lst", "eth"]
     },
     {
       "chainId": 8453,
@@ -854,7 +861,7 @@
       "name": "Wrapped Ether",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/eth.jpg",
-      "tags": ["bridged"]
+      "tags": ["bridged", "eth"]
     },
     {
       "chainId": 42161,
@@ -863,7 +870,7 @@
       "name": "Wrapped BTC",
       "decimals": 8,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/btc.jpg",
-      "tags": ["bridged"]
+      "tags": ["bridged", "btc"]
     },
     {
       "chainId": 42420,
@@ -890,7 +897,7 @@
       "name": "Bitlayer Bitcoin (Bridged)",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/btc.jpg",
-      "tags": ["bridged"]
+      "tags": ["bridged", "btc"]
     },
     {
       "chainId": 42420,
@@ -899,7 +906,7 @@
       "name": "Wrapped Ether (Bridged)",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/eth.jpg",
-      "tags": ["bridged"]
+      "tags": ["bridged", "eth"]
     },
     {
       "chainId": 43114,
@@ -944,7 +951,7 @@
       "name": "Wrapped Ether",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/eth.jpg",
-      "tags": ["bridged"]
+      "tags": ["bridged", "eth"]
     },
     {
       "chainId": 43114,
@@ -953,7 +960,7 @@
       "name": "Bitcoin",
       "decimals": 8,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/btc.jpg",
-      "tags": ["bridged"]
+      "tags": ["bridged", "btc"]
     },
     {
       "chainId": 43114,
@@ -988,7 +995,7 @@
       "name": "Wrapped Ether",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/eth.jpg",
-      "tags": ["bridged"]
+      "tags": ["bridged", "eth"]
     },
     {
       "chainId": 81457,
@@ -997,7 +1004,7 @@
       "name": "Wrapped BTC",
       "decimals": 8,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/btc.jpg",
-      "tags": ["bridged"]
+      "tags": ["bridged", "btc"]
     },
     {
       "chainId": 111188,
@@ -1033,7 +1040,7 @@
       "name": "Wrapped Real Ether",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/WREETH.png",
-      "tags": ["wNative"]
+      "tags": ["bridged", "eth"]
     },
     {
       "chainId": 111188,
@@ -1136,7 +1143,7 @@
       "name": "Wrapped liquid staked Ether 2.0 (PoS)",
       "decimals": 18,
       "logoURI": "https://polygonscan.com/token/images/wsteth_32.png",
-      "tags": ["bridged"]
+      "tags": ["bridged", "lst", "eth"]
     },
     {
       "chainId": 534352,
@@ -1145,7 +1152,7 @@
       "name": "Wrapped Ether",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/eth.jpg",
-      "tags": ["bridged"]
+      "tags": ["bridged", "eth"]
     },
     {
       "chainId": 534352,
@@ -1154,7 +1161,7 @@
       "name": "Wrapped BTC",
       "decimals": 8,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/btc.jpg",
-      "tags": ["bridged"]
+      "tags": ["bridged", "btc"]
     },
     {
       "chainId": 146,
@@ -1833,7 +1840,7 @@
       "name": "WETH",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/sushiswap/list/master/logos/token-logos/token/eth.jpg",
-      "tags": ["bridged"]
+      "tags": ["bridged", "eth"]
     },
     {
       "chainId": 9745,
@@ -1842,7 +1849,7 @@
       "name": "Wrapped eETH",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/weeth.svg",
-      "tags": ["bridged", "ETH"]
+      "tags": ["bridged", "lst", "eth"]
     },
     {
       "chainId": 9745,

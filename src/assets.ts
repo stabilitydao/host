@@ -150,6 +150,7 @@ export const assets: Asset[] = [
     addresses: {
       "137": "0x03b54A6e9a984069379fae1a4fC4dBAE93B3bCCD",
       "8453": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
+      "9745": "0xe48D935e6C9e735463ccCf29a7F11e32bC09136E",
       "534352": "0xf610A9dfB7C89644979b4A0f27063E9e7d7Cda32",
     },
     symbol: "wstETH",
@@ -1559,6 +1560,7 @@ export const assets: Asset[] = [
   {
     addresses: {
       "1": "0x356B8d89c1e1239Cbbb9dE4815c39A1474d5BA7D",
+      "9745": "0xC4374775489CB9C56003BF2C9b12495fC64F0771",
     },
     symbol: "syrupUSDT",
     website: "https://maple.finance",
@@ -1590,6 +1592,48 @@ export const assets: Asset[] = [
     },
     symbol: "PT-srUSDe-2APR2026",
     website: "https://app.pendle.finance",
+  },
+  {
+    addresses: {
+      "9745": "0x1B64B9025EEbb9A6239575dF9Ea4b9Ac46D4d193",
+    },
+    symbol: "XAUt0",
+    website: "https://usdt0.to/gold",
+  },
+  {
+    addresses: {
+      "9745": "0x93B544c330F60A2aa05ceD87aEEffB8D38FD8c9a",
+    },
+    symbol: "PT-USDe-15JAN2026",
+    website: "https://app.pendle.finance",
+  },
+  {
+    addresses: {
+      "9745": "0x02FCC4989B4C9D435b7ceD3fE1Ba4CF77BBb5Dd8",
+    },
+    symbol: "PT-sUSDE-15JAN2026",
+    website: "https://app.pendle.finance",
+  },
+  {
+    addresses: {
+      "9745": "0xab509448ad489e2E1341e25CC500f2596464Cc82",
+    },
+    symbol: "PT-sUSDE-9APR2026",
+    website: "https://app.pendle.finance",
+  },
+  {
+    addresses: {
+      "9745": "0x54Dc267be2839303ff1e323584A16e86CeC4Aa44",
+    },
+    symbol: "PT-USDe-9APR2026",
+    website: "https://app.pendle.finance",
+  },
+  {
+    addresses: {
+      "9745": "0xe561FE05C39075312Aa9Bc6af79DdaE981461359",
+    },
+    symbol: "wrsETH",
+    website: "https://kerneldao.com/kelp/",
   },
 ];
 

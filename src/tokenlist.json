@@ -5,7 +5,7 @@
   "timestamp": "2026-02-08T00:00:00+00:00",
   "version": {
     "major": 1,
-    "minor": 3,
+    "minor": 4,
     "patch": 0
   },
   "tags": {
@@ -2020,6 +2020,78 @@
       "name": "PT Strata Senior USDe 2APR2026",
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/ptsusde.svg",
+      "tags": ["pt"]
+    },
+    {
+      "chainId": 9745,
+      "address": "0x1B64B9025EEbb9A6239575dF9Ea4b9Ac46D4d193",
+      "symbol": "XAUt0",
+      "name": "XAUt0",
+      "decimals": 6,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/xaut0.png",
+      "tags": []
+    },
+    {
+      "chainId": 9745,
+      "address": "0x93B544c330F60A2aa05ceD87aEEffB8D38FD8c9a",
+      "symbol": "PT-USDe-15JAN2026",
+      "name": "PT Ethena USDe 15JAN2026",
+      "decimals": 18,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/ptusde.svg",
+      "tags": ["pt"]
+    },
+    {
+      "chainId": 9745,
+      "address": "0x02FCC4989B4C9D435b7ceD3fE1Ba4CF77BBb5Dd8",
+      "symbol": "PT-sUSDE-15JAN2026",
+      "name": "PT Ethena sUSDE 15JAN2026",
+      "decimals": 18,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/PT-sUSDE-25SEP2025.svg",
+      "tags": ["pt"]
+    },
+    {
+      "chainId": 9745,
+      "address": "0xe48D935e6C9e735463ccCf29a7F11e32bC09136E",
+      "symbol": "wstETH",
+      "name": "Wrapped liquid staked Ether 2.0",
+      "decimals": 18,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/wstETH.svg",
+      "tags": ["lst", "eth"]
+    },
+    {
+      "chainId": 9745,
+      "address": "0xe561FE05C39075312Aa9Bc6af79DdaE981461359",
+      "symbol": "wrsETH",
+      "name": "rsETHWrapper",
+      "decimals": 18,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/wrseth.svg",
+      "tags": ["lst", "eth"]
+    },
+    {
+      "chainId": 9745,
+      "address": "0xC4374775489CB9C56003BF2C9b12495fC64F0771",
+      "symbol": "syrupUSDT",
+      "name": "Syrup USDT",
+      "decimals": 6,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/syrupusdt.webp",
+      "tags": ["usd"]
+    },
+    {
+      "chainId": 9745,
+      "address": "0xab509448ad489e2E1341e25CC500f2596464Cc82",
+      "symbol": "PT-sUSDE-9APR2026",
+      "name": "PT Ethena sUSDE 9APR2026",
+      "decimals": 18,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/PT-sUSDE-25SEP2025.svg",
+      "tags": ["pt"]
+    },
+    {
+      "chainId": 9745,
+      "address": "0x54Dc267be2839303ff1e323584A16e86CeC4Aa44",
+      "symbol": "PT-USDe-9APR2026",
+      "name": "PT Ethena USDe 9APR2026",
+      "decimals": 18,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/ptusde.svg",
       "tags": ["pt"]
     }
   ]

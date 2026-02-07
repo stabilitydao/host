@@ -970,6 +970,7 @@ export const assets: Asset[] = [
   },
   {
     addresses: {
+      "1": "0x9D39A5DE30e57443BfF2A8307A4256c8797A3497",
       "9745": "0x211Cc4DD073734dA055fbF44a2b4667d5E5fE5d2",
     },
     symbol: "sUSDe",

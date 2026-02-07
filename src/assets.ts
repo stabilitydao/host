@@ -3,9 +3,9 @@ import { tokenlist } from "./index";
 export type Asset = {
   addresses: { [chainId: string]: `0x${string}` | `0x${string}`[] };
   symbol: string;
-  description: string;
+  description?: string;
   website: string;
-  color: string;
+  color?: string;
   mintApp?: string;
 };
 
@@ -1555,6 +1555,48 @@ export const assets: Asset[] = [
     website: "https://parallel.best/",
     color: "#bc43c0ff",
     description: "Staked USDp",
+  },
+  {
+    addresses: {
+      "1": "0xacA92E438df0B2401fF60dA7E4337B687a2435DA",
+    },
+    symbol: "mUSD",
+    website: "https://metamask.io/price/metamask-usd",
+  },
+  {
+    addresses: {
+      "1": "0x356B8d89c1e1239Cbbb9dE4815c39A1474d5BA7D",
+    },
+    symbol: "syrupUSDT",
+    website: "https://maple.finance",
+  },
+  {
+    addresses: {
+      "1": "0xe343167631d89B6Ffc58B88d6b7fB0228795491D",
+    },
+    symbol: "USDG",
+    website: "https://globaldollar.com",
+  },
+  {
+    addresses: {
+      "1": "0xAeBf0Bb9f57E89260d57f31AF34eB58657d96Ce0",
+    },
+    symbol: "PT-USDe-7MAY2026",
+    website: "https://app.pendle.finance",
+  },
+  {
+    addresses: {
+      "1": "0x3de0ff76E8b528C092d47b9DaC775931cef80F49",
+    },
+    symbol: "PT-sUSDE-7MAY2026",
+    website: "https://app.pendle.finance",
+  },
+  {
+    addresses: {
+      "1": "0x9Bf45ab47747F4B4dD09B3C2c73953484b4eB375",
+    },
+    symbol: "PT-srUSDe-2APR2026",
+    website: "https://app.pendle.finance",
   },
 ];
 

@@ -5,7 +5,7 @@
   "timestamp": "2026-02-08T00:00:00+00:00",
   "version": {
     "major": 1,
-    "minor": 2,
+    "minor": 3,
     "patch": 0
   },
   "tags": {
@@ -1967,6 +1967,60 @@
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/os/xstbl.png",
       "tags": []
+    },
+    {
+      "chainId": 1,
+      "address": "0xacA92E438df0B2401fF60dA7E4337B687a2435DA",
+      "symbol": "mUSD",
+      "name": "MetaMask USD",
+      "decimals": 6,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/musd.webp",
+      "tags": ["usd"]
+    },
+    {
+      "chainId": 1,
+      "address": "0x356B8d89c1e1239Cbbb9dE4815c39A1474d5BA7D",
+      "symbol": "syrupUSDT",
+      "name": "Syrup USDT",
+      "decimals": 6,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/syrupusdt.webp",
+      "tags": ["usd"]
+    },
+    {
+      "chainId": 1,
+      "address": "0xe343167631d89B6Ffc58B88d6b7fB0228795491D",
+      "symbol": "USDG",
+      "name": "Global Dollar",
+      "decimals": 6,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/usdg.webp",
+      "tags": ["usd"]
+    },
+    {
+      "chainId": 1,
+      "address": "0xAeBf0Bb9f57E89260d57f31AF34eB58657d96Ce0",
+      "symbol": "PT-USDe-7MAY2026",
+      "name": "PT Ethena USDe 7MAY2026",
+      "decimals": 18,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/ptusde.svg",
+      "tags": ["pt"]
+    },
+    {
+      "chainId": 1,
+      "address": "0x3de0ff76E8b528C092d47b9DaC775931cef80F49",
+      "symbol": "PT-sUSDE-7MAY2026",
+      "name": "PT Ethena sUSDE 7MAY2026",
+      "decimals": 18,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/ptsusde.svg",
+      "tags": ["pt"]
+    },
+    {
+      "chainId": 1,
+      "address": "0x9Bf45ab47747F4B4dD09B3C2c73953484b4eB375",
+      "symbol": "PT-srUSDe-2APR2026",
+      "name": "PT Strata Senior USDe 2APR2026",
+      "decimals": 18,
+      "logoURI": "https://raw.githubusercontent.com/stabilitydao/.github/main/tokens/ptsusde.svg",
+      "tags": ["pt"]
     }
   ]
 }

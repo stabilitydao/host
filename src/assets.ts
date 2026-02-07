@@ -959,6 +959,7 @@ export const assets: Asset[] = [
   },
   {
     addresses: {
+      "1": "0x4c9EDD5852cd905f086C759E8383e09bff1E68B3",
       "9745": "0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34",
     },
     symbol: "USDe",
@@ -1304,15 +1305,6 @@ export const assets: Asset[] = [
     description: "Staked ETH",
     website: "https://www.stakewise.io/",
     color: "#6b46c1",
-  },
-  {
-    addresses: {
-      "1": "0x4c9EDD5852cd905f086C759E8383e09bff1E68B3",
-    },
-    symbol: "USDe",
-    description: "USDe",
-    website: "https://ethena.fi/",
-    color: "#4f4f4f",
   },
   {
     addresses: {

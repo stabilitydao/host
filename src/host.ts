@@ -747,7 +747,7 @@ export class Host {
     const dao = this.getDAO(symbol);
 
     // validate payload
-    this._validateFunding(dao.phase, [funding]);
+    this.validateFunding(dao.phase, [funding]);
 
     // instant execute for DRAFT
     if (dao.phase === LifecyclePhase.DRAFT) {
@@ -797,7 +797,7 @@ export class Host {
     const dao = this.getDAO(symbol);
 
     // validate
-    this._validateVesting(dao.phase, vestings, this.getTgeData(dao));
+    this.validateVesting(dao.phase, vestings, this.getTgeData(dao));
 
     // instant execute for DRAFT
     if (dao.phase === LifecyclePhase.DRAFT) {
@@ -1045,21 +1045,21 @@ export class Host {
   /** Strict on-chain validation */
   /** @throws Error */
   validate(dao: IDAOData) {
-    this._validateName(dao.name);
-    this._validateSymbol(dao.symbol);
+    this.validateName(dao.name);
+    this.validateSymbol(dao.symbol);
     if (
       dao.params.vePeriod < this.settings.minVePeriod ||
       dao.params.vePeriod > this.settings.maxVePeriod
     ) {
       throw new Error(`VePeriod(${dao.params.vePeriod})`);
     }
-    this._validatePvpFee(dao.params.pvpFee);
+    this.validatePvpFee(dao.params.pvpFee);
     if (!dao.funding.length) {
       throw new Error("NeedFunding");
     }
 
     // check activity are correct
-    this._validateActivity(dao.activity);
+    this.validateActivity(dao.activity);
 
     // todo: check funding array has unique funding types
     // todo: check funding dates
@@ -1130,7 +1130,7 @@ export class Host {
     this.events.push(event);
   }
 
-  private _validateName(name: string) {
+  public validateName(name: string) {
     if (
       name.length < this.settings.minNameLength ||
       name.length > this.settings.maxNameLength
@@ -1139,7 +1139,7 @@ export class Host {
     }
   }
 
-  private _validateSymbol(symbol: string) {
+  public validateSymbol(symbol: string) {
     if (
       symbol.length < this.settings.minSymbolLength ||
       symbol.length > this.settings.maxSymbolLength
@@ -1151,21 +1151,21 @@ export class Host {
     }
   }
 
-  private _validatePvpFee(pvpFee: number) {
+  public validatePvpFee(pvpFee: number) {
     if (pvpFee < this.settings.minPvPFee || pvpFee > this.settings.maxPvPFee) {
       throw new Error(`PvPFee(${pvpFee})`);
     }
   }
 
-  private _validateFunding(daoPhase: LifecyclePhase, fundings: IFunding[]) {
+  public validateFunding(daoPhase: LifecyclePhase, fundings: IFunding[]) {
     Validation.validateFunding(daoPhase, fundings, this.settings);
   }
 
-  private _validateActivity(activity: Activity[]) {
+  public validateActivity(activity: Activity[]) {
     Validation.validateActivity(activity);
   }
 
-  private _validateVesting(
+  public validateVesting(
     daoPhase: LifecyclePhase,
     vestings: IVesting[],
     tge?: IFunding,

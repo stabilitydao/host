@@ -21,8 +21,6 @@ import { activities } from "../src/activity";
 import { UnitStatus, UnitType } from "../src/host/types";
 
 describe("testing Host", () => {
-  const DEFAULT_TOTAL_SUPPLY = 1_000_000;
-
   test("Lifecycle", () => {
     // OS supports 3 EVM blockchains
     // Ethereum
@@ -44,9 +42,9 @@ describe("testing Host", () => {
       {
         vePeriod: 365,
         pvpFee: 100,
+        totalSupply: 1e6,
       },
       [_generateSeedFunding(os56)],
-      DEFAULT_TOTAL_SUPPLY,
     );
 
     // todo other OS instances must see a symbol of new DAO
@@ -350,9 +348,9 @@ describe("testing Host", () => {
       {
         vePeriod: 30,
         pvpFee: 90,
+        totalSupply: 1e6,
       },
       [_generateSeedFunding(os1, 7 * 86400)],
-      DEFAULT_TOTAL_SUPPLY,
     );
 
     // todo other OS instances must see a symbol of new DAO
@@ -432,9 +430,9 @@ describe("testing Host", () => {
       {
         vePeriod: 14,
         pvpFee: 99,
+        totalSupply: 1e6,
       },
       [_generateSeedFunding(os10, 7 * 86400), _generateTGEFunding(os10)],
-      DEFAULT_TOTAL_SUPPLY,
     );
 
     os10.updateImages(daoMachines.symbol, {
@@ -568,9 +566,9 @@ describe("testing Host", () => {
         {
           vePeriod: 365,
           pvpFee: 90,
+          totalSupply: 1e6,
         },
         funding,
-        DEFAULT_TOTAL_SUPPLY,
       );
       expect(0).toBe(1);
     } catch (error: Error | unknown) {
@@ -586,9 +584,9 @@ describe("testing Host", () => {
         {
           vePeriod: 365,
           pvpFee: 90,
+          totalSupply: 1e6,
         },
         funding,
-        DEFAULT_TOTAL_SUPPLY,
       );
       expect(0).toBe(1);
     } catch (error: Error | unknown) {
@@ -604,9 +602,9 @@ describe("testing Host", () => {
         {
           vePeriod: 365,
           pvpFee: 90,
+          totalSupply: 1e6,
         },
         funding,
-        DEFAULT_TOTAL_SUPPLY,
       );
       expect(0).toBe(1);
     } catch (error: Error | unknown) {
@@ -622,9 +620,9 @@ describe("testing Host", () => {
         {
           vePeriod: 365 * 5,
           pvpFee: 100,
+          totalSupply: 1e6,
         },
         funding,
-        DEFAULT_TOTAL_SUPPLY,
       );
       expect(0).toBe(1);
     } catch (error: Error | unknown) {
@@ -640,9 +638,9 @@ describe("testing Host", () => {
         {
           vePeriod: 365,
           pvpFee: 101,
+          totalSupply: 1e6,
         },
         funding,
-        DEFAULT_TOTAL_SUPPLY,
       );
       expect(0).toBe(1);
     } catch (error: Error | unknown) {
@@ -658,9 +656,9 @@ describe("testing Host", () => {
         {
           vePeriod: 365,
           pvpFee: 90,
+          totalSupply: 1e6,
         },
         [],
-        DEFAULT_TOTAL_SUPPLY,
       );
       expect(0).toBe(1);
     } catch (error: Error | unknown) {
@@ -785,9 +783,9 @@ describe("testing Host", () => {
       {
         vePeriod: 365,
         pvpFee: 90,
+        totalSupply: 1e6,
       },
       funding,
-      DEFAULT_TOTAL_SUPPLY,
     );
   };
 

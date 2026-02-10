@@ -33,6 +33,7 @@ export const daos: IDAOData[] = [
     params: {
       vePeriod: 180,
       pvpFee: 100,
+      totalSupply: 1e6,
     },
     funding: [
       {
@@ -164,6 +165,7 @@ export const daos: IDAOData[] = [
       pvpFee: 80,
       minPower: 4000,
       recoveryShare: 10,
+      totalSupply: 1e6,
     },
     funding: [
       {
@@ -301,6 +303,7 @@ export const daos: IDAOData[] = [
     params: {
       vePeriod: 120,
       pvpFee: 100,
+      totalSupply: 1e6,
     },
     funding: [
       {

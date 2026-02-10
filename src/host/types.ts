@@ -46,14 +46,18 @@ export interface IOSSettings {
   /** Max funding duration in days */
   maxFundingDuration: number;
   /** Min allowed funding amount to raise in terms of exchange asset */
-  minFindingRaise: number;
+  minFundingRaise: number;
   /** Max allowed funding amount to raise in terms of exchange asset */
-  maxFindingRaise: number;
+  maxFundingRaise: number;
   /** Min length of a vesting name  */
   minVestingNameLen: number;
   /** Max length of a vesting name */
   maxVestingNameLen: number;
+  /** Min vesting duration in days*/
+  minVestingDuration: number;
+  /** Max vesting duration in days*/
+  maxVestingDuration: number;
 
-  /** Min allowed interval days between vestring.start and tge.claim */
+  /** Min allowed interval days between vesting.start and tge.claim */
   minCliff: number;
 }

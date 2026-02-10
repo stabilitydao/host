@@ -116,9 +116,6 @@ export interface IDAOData {
   /** DAO custom metadata stored off-chain. */
   daoMetaDataLocation?: string; // "local","https://..."
 
-  /** Total supply of DAO token. This value can be changed before start of TGE*/
-  totalSupply: number;
-
   /** SEGMENT 4: OFF-CHAIN emitted data */
 
   unitsMetaData: IUnitMetaData[];
@@ -199,6 +196,8 @@ export interface IDAOParameters {
   minPower?: number;
   /** Share of total DAO revenue going to accidents compensations, percent */
   recoveryShare?: number;
+  /** Total supply of DAO token. This value can be changed before start of TGE*/
+  totalSupply: number;
 }
 
 export interface IDAOChainSettings {
@@ -457,11 +456,13 @@ export class Host {
     maxPvPFee: 100,
     minFundingDuration: 1,
     maxFundingDuration: 180,
-    minFindingRaise: 1000,
-    maxFindingRaise: 1e12,
+    minFundingRaise: 1000,
+    maxFundingRaise: 1e12,
     minVestingNameLen: 1,
     maxVestingNameLen: 20,
     minCliff: 15,
+    minVestingDuration: 10,
+    maxVestingDuration: 365,
   };
 
   constructor(chainId: string) {
@@ -501,7 +502,6 @@ export class Host {
     activity: Activity[],
     params: IDAOParameters,
     funding: IFunding[],
-    totalSupply: number,
     metaDataLocation?: string,
   ): IDAOData {
     const dao: IDAOData = {
@@ -527,7 +527,6 @@ export class Host {
       salts: {},
       daoMetaDataLocation: metaDataLocation,
       unitsMetaData: [],
-      totalSupply,
     };
 
     this.validate(dao);

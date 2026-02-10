@@ -66,10 +66,12 @@ describe("testing DAO data validation", () => {
       maxPvPFee: 100,
       minFundingDuration: 1,
       maxFundingDuration: 180,
-      minFindingRaise: 1e3,
-      maxFindingRaise: 1e12,
+      minFundingRaise: 1e3,
+      maxFundingRaise: 1e12,
       minVestingNameLen: 1,
       maxVestingNameLen: 20,
+      minVestingDuration: 10,
+      maxVestingDuration: 365 * 4,
       minCliff: 15,
     };
   }
@@ -202,8 +204,8 @@ describe("testing DAO data validation", () => {
       const st = getIOSSettings();
       const fNormal = makeFunding({
         type: FundingType.SEED,
-        minRaise: st.minFindingRaise,
-        maxRaise: st.maxFindingRaise,
+        minRaise: st.minFundingRaise,
+        maxRaise: st.maxFundingRaise,
       });
       Validation.validateFunding(LifecyclePhase.DRAFT, [fNormal], st);
     });
@@ -211,8 +213,8 @@ describe("testing DAO data validation", () => {
     test("minRaise > maxRaise => InvalidFundingRaise", () => {
       const f = makeFunding({
         type: FundingType.SEED,
-        minRaise: settings.minFindingRaise + 1,
-        maxRaise: settings.minFindingRaise, // (!)
+        minRaise: settings.minFundingRaise + 1,
+        maxRaise: settings.minFundingRaise, // (!)
       });
       expect(() =>
         Validation.validateFunding(LifecyclePhase.DRAFT, [f], settings),
@@ -222,8 +224,8 @@ describe("testing DAO data validation", () => {
     test("minRaise < minFundingRaise => InvalidFundingRaise", () => {
       const f = makeFunding({
         type: FundingType.SEED,
-        minRaise: settings.maxFindingRaise - 1,
-        maxRaise: settings.maxFindingRaise + 1,
+        minRaise: settings.maxFundingRaise - 1,
+        maxRaise: settings.maxFundingRaise + 1,
       });
       expect(() =>
         Validation.validateFunding(LifecyclePhase.DRAFT, [f], settings),
@@ -233,8 +235,8 @@ describe("testing DAO data validation", () => {
     test("maxRaise > maxFundingRaise => InvalidFundingRaise", () => {
       const f = makeFunding({
         type: FundingType.SEED,
-        minRaise: settings.minFindingRaise,
-        maxRaise: settings.maxFindingRaise + 100,
+        minRaise: settings.minFundingRaise,
+        maxRaise: settings.maxFundingRaise + 100,
       });
       expect(() =>
         Validation.validateFunding(LifecyclePhase.DRAFT, [f], settings),
@@ -354,6 +356,41 @@ describe("testing DAO data validation", () => {
       ).toThrow("TotalAllocationTooHigh");
     });
 
+    test("throw if vesting duration is out of range", () => {
+      const st: IOSSettings = {
+        ...settings,
+        minVestingDuration: 10,
+        maxVestingDuration: 20,
+      };
+      expect(() =>
+        Validation.validateVesting(
+          LifecyclePhase.TGE,
+          makeSingleVesting({
+            name: "1",
+            allocation: 90,
+            startOffsetDays: 30,
+            durationDays: 9,
+          }),
+          st,
+          getTge({ claim: START_DAO + 15 * DAY }),
+        ),
+      ).toThrow("InvalidVestingPeriod");
+
+      expect(() =>
+        Validation.validateVesting(
+          LifecyclePhase.TGE,
+          makeSingleVesting({
+            name: "1",
+            allocation: 90,
+            startOffsetDays: 30,
+            durationDays: 21,
+          }),
+          st,
+          getTge({ claim: START_DAO + 15 * DAY }),
+        ),
+      ).toThrow("InvalidVestingPeriod");
+    });
+
     test("no tge => vesting is not allowed", () => {
       const normal = [
         ...makeSingleVesting({ name: "1", allocation: 99 }),
@@ -388,7 +425,7 @@ describe("testing DAO data validation", () => {
       ).not.toThrow();
     });
 
-    test("vestring.start > tge.claim + min cliff, ok", () => {
+    test("vesting.start > tge.claim + min cliff, ok", () => {
       const st: IOSSettings = { ...settings, minCliff: 5 };
       expect(() =>
         Validation.validateVesting(
@@ -400,7 +437,7 @@ describe("testing DAO data validation", () => {
       ).not.toThrow();
     });
 
-    test("vestring.start < tge.claim + min cliff => IncorrectVestingStart", () => {
+    test("vesting.start < tge.claim + min cliff => IncorrectVestingStart", () => {
       const st: IOSSettings = { ...settings, minCliff: 5 };
       expect(() =>
         Validation.validateVesting(

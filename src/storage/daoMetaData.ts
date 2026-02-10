@@ -1,6 +1,7 @@
-import { IDAOMetaData, UnitComponentCategory } from "../host";
+import { IDAOMetaData } from "../host";
 import { ArtifactType } from "../activity/builder";
 import { AgentRole, emptyRuntime } from "../agents";
+import { UnitComponentCategory } from "../host/types";
 
 export const daoMetaData: { [symbol: string]: IDAOMetaData } = {
   host: {

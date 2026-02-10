@@ -20,7 +20,9 @@
     "build": "tsc",
     "test": "jest",
     "coverage": "jest --collect-coverage",
-    "postbuild": "shx cp src/tokenlist.json out/"
+    "postbuild": "shx cp src/tokenlist.json out/",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",

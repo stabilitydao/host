@@ -3,11 +3,10 @@ import {
   FundingType,
   IDAOData,
   LifecyclePhase,
-  UnitStatus,
-  UnitType,
 } from "../host";
 import { ChainName } from "../chains";
 import { Activity } from "../activity";
+import { UnitStatus, UnitType } from "../host/types";
 
 export const daos: IDAOData[] = [
   {

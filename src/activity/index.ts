@@ -1,4 +1,4 @@
-import { UnitType } from "../host";
+import { UnitType } from "../host/types";
 
 /** Organization activities supported by OS. */
 export enum Activity {

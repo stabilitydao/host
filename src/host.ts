@@ -8,6 +8,8 @@ import { IBuilderActivity } from "./activity/builder";
 import { Activity } from "./activity";
 import { IDAOAPIDataV2 } from "./api";
 import { getTokenData, TokenData } from "./assets";
+import { Validation } from "./validation";
+import { IOSSettings, UnitStatus, UnitType } from "./host/types";
 
 export const HOST_DESCRIPTION = "Where True DAOs Live & Work";
 export const DAO_FEATURES: string[] = [
@@ -114,6 +116,9 @@ export interface IDAOData {
   /** DAO custom metadata stored off-chain. */
   daoMetaDataLocation?: string; // "local","https://..."
 
+  /** Total supply of DAO token. This value can be changed before start of TGE*/
+  totalSupply: number;
+
   /** SEGMENT 4: OFF-CHAIN emitted data */
 
   unitsMetaData: IUnitMetaData[];
@@ -216,6 +221,8 @@ export interface IFunding {
   minRaise: number;
   maxRaise: number;
   raised: number;
+
+  /** Date of DAO launching (after TGE finishing, DAO token is deployed, etc) */
   claim?: number;
 }
 
@@ -400,35 +407,6 @@ export interface IUnitMetaData {
   //components?: { [category in UnitComponentCategory]?: UnitComponent[] };
 }
 
-/** Supported unit types */
-export enum UnitType {
-  /** VE-token early exit fees */
-  PVP = "PVP",
-  /** Decentralized finance protocol */
-  DEFI_PROTOCOL = "DEFI_PROTOCOL",
-  /** Maximum Extractable Value opportunities searcher and submitter. */
-  MEV_SEARCHER = "MEV_SEARCHER",
-  /** Software as a Service business */
-  //SAAS = "SAAS",
-}
-
-/** Unit status can be changed manually by DAO holders. Revenue of a unit matter. */
-export enum UnitStatus {
-  RESEARCH = "RESEARCH",
-  BUILDING_PROTOTYPE = "BUILDING_PROTOTYPE",
-  PROTOTYPE = "PROTOTYPE",
-  BUILDING = "BUILDING",
-  LIVE = "LIVE",
-}
-
-/** Supported categories of running units. */
-export enum UnitComponentCategory {
-  CHAIN_SUPPORT = "CHAIN_SUPPORT",
-  ENGINE_SUPPORT = "ENGINE_SUPPORT",
-  DEFI_STRATEGY = "DEFI_STRATEGY",
-  MEV_STRATEGY = "MEV_STRATEGY",
-}
-
 export interface IUnitUILink {
   href: `https://${string}`;
   title: string;
@@ -479,6 +457,11 @@ export class Host {
     maxPvPFee: 100,
     minFundingDuration: 1,
     maxFundingDuration: 180,
+    minFindingRaise: 1000,
+    maxFindingRaise: 1e12,
+    minVestingNameLen: 1,
+    maxVestingNameLen: 20,
+    minCliff: 15,
   };
 
   constructor(chainId: string) {
@@ -518,6 +501,7 @@ export class Host {
     activity: Activity[],
     params: IDAOParameters,
     funding: IFunding[],
+    totalSupply: number,
     metaDataLocation?: string,
   ): IDAOData {
     const dao: IDAOData = {
@@ -543,6 +527,7 @@ export class Host {
       salts: {},
       daoMetaDataLocation: metaDataLocation,
       unitsMetaData: [],
+      totalSupply,
     };
 
     this.validate(dao);
@@ -813,7 +798,7 @@ export class Host {
     const dao = this.getDAO(symbol);
 
     // validate
-    this._validateVesting(dao.phase, vestings);
+    this._validateVesting(dao.phase, vestings, this.getTgeData(dao));
 
     // instant execute for DRAFT
     if (dao.phase === LifecyclePhase.DRAFT) {
@@ -1074,7 +1059,9 @@ export class Host {
       throw new Error("NeedFunding");
     }
 
-    // todo: check activity are correct
+    // check activity are correct
+    this._validateActivity(dao.activity);
+
     // todo: check funding array has unique funding types
     // todo: check funding dates
     // todo: check funding raise goals
@@ -1108,6 +1095,15 @@ export class Host {
     }
 
     return dao.deployments[this.chainId][ContractIndices.DAO_TOKEN_5] as string;
+  }
+
+  getTgeData(dao: IDAOData): IFunding | undefined {
+    const fundingExist =
+      dao.funding.filter((f) => f.type === FundingType.TGE).length === 1;
+    if (fundingExist) {
+      const fundingIndex = this.getFundingIndex(dao.symbol, FundingType.TGE);
+      return dao.funding[fundingIndex];
+    }
   }
 
   getFundingIndex(symbol: string, type: FundingType) {
@@ -1163,45 +1159,19 @@ export class Host {
   }
 
   private _validateFunding(daoPhase: LifecyclePhase, fundings: IFunding[]) {
-    for (const funding of fundings) {
-      if (
-        funding.type === FundingType.SEED &&
-        daoPhase !== LifecyclePhase.DRAFT
-      ) {
-        throw new Error("TooLateToUpdateSuchFunding");
-      }
-      if (
-        funding.type === FundingType.TGE &&
-        ![
-          LifecyclePhase.DRAFT,
-          LifecyclePhase.SEED,
-          LifecyclePhase.DEVELOPMENT,
-        ].includes(daoPhase)
-      ) {
-        throw new Error("TooLateToUpdateSuchFunding");
-      }
-
-      // todo check min round duration
-      // todo check max round duration
-      // todo check start date delay
-      // todo check min amount
-      // todo check max amount
-    }
+    Validation.validateFunding(daoPhase, fundings, this.settings);
   }
 
-  private _validateVesting(daoPhase: LifecyclePhase, vestings: IVesting[]) {
-    if (
-      [
-        LifecyclePhase.LIVE_CLIFF,
-        LifecyclePhase.LIVE_VESTING,
-        LifecyclePhase.LIVE,
-      ].includes(daoPhase)
-    ) {
-      throw new Error("TooLateToUpdateVesting");
-    }
-    for (const vesting of vestings) {
-      // todo check vesting consistency
-    }
+  private _validateActivity(activity: Activity[]) {
+    Validation.validateActivity(activity);
+  }
+
+  private _validateVesting(
+    daoPhase: LifecyclePhase,
+    vestings: IVesting[],
+    tge?: IFunding,
+  ) {
+    Validation.validateVesting(daoPhase, vestings, this.settings, tge);
   }
 
   private _sendCrossChainMessage(type: CROSS_CHAIN_MESSAGE, payload: any) {
@@ -1252,23 +1222,6 @@ export enum DAOAction {
   UPDATE_UNITS,
   UPDATE_FUNDING,
   UPDATE_VESTING,
-}
-
-interface IOSSettings {
-  priceDao: number;
-  priceUnit: number;
-  priceOracle: number;
-  priceBridge: number;
-  minNameLength: number;
-  maxNameLength: number;
-  minSymbolLength: number;
-  maxSymbolLength: number;
-  minVePeriod: number;
-  maxVePeriod: number;
-  minPvPFee: number;
-  maxPvPFee: number;
-  minFundingDuration: number;
-  maxFundingDuration: number;
 }
 
 enum VotingStatus {

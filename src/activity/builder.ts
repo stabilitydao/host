@@ -3,7 +3,7 @@
  BUILDER is a team of engineers managed by DAOs.
  */
 
-import { UnitComponentCategory } from "../host";
+import { UnitComponentCategory } from "../host/types";
 
 /**
  BUILDER data.

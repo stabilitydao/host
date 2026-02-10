@@ -54,6 +54,7 @@ export class Validation {
       }
       set.add(funding.type);
 
+      // ----------------------- Min/max round duration
       const duration = funding.end - funding.start;
       if (
         duration < settings.minFundingDuration * 24 * 3600 ||
@@ -62,6 +63,7 @@ export class Validation {
         throw new Error("InvalidFundingPeriod");
       }
 
+      // ----------------------- Min/max raise
       if (
         funding.minRaise >= funding.maxRaise ||
         funding.minRaise < settings.minFindingRaise ||
@@ -70,11 +72,7 @@ export class Validation {
         throw new Error("InvalidFundingRaise");
       }
 
-      // todo check min round duration
-      // todo check max round duration
-      // todo check start date delay
-      // todo check min amount
-      // todo check max amount
+      // start date delay is not checked
     }
   }
 

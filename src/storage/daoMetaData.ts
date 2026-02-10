@@ -290,7 +290,17 @@ export const daoMetaData: { [symbol: string]: IDAOMetaData } = {
     builderActivity: {
       multisig: [],
       repo: ["stabilitydao/mevbot"],
-      pools: [],
+      pools: [
+        {
+          unitIds: ["mevbot:ethereum"],
+          name: "MEVBOT Ethereum",
+          label: {
+            name: "MEVBOT:Ethereum",
+            description: "Building MEVBOT for Ethereum chain",
+            color: "#4cbaff",
+          },
+        },
+      ],
       conveyors: [],
       burnRate: [],
       workers: [
@@ -305,7 +315,7 @@ export const daoMetaData: { [symbol: string]: IDAOMetaData } = {
     agents: [
       {
         roles: [AgentRole.OPERATOR],
-        name: "MEV Earner",
+        name: "MEVBOT Agent",
         ...emptyRuntime,
         api: [],
       },

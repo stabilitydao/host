@@ -21,7 +21,6 @@ import { IConveyor, IGithubIssueV2 } from "./activity/builder";
 import {
   LifecyclePhase,
   Host,
-  UnitStatus,
   getDAOUnit,
   getUnit,
   getDAOUnitMetaData,
@@ -40,6 +39,7 @@ import { daos } from "./storage/daos";
 import { daoMetaData } from "./storage/daoMetaData";
 import { RevenueChart, IHostAgentMemory } from "./api";
 import { hostDeployments } from "./deployments";
+import { UnitStatus } from "./host/types";
 
 export {
   chains,

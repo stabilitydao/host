@@ -33,7 +33,7 @@ export const daos: IDAOData[] = [
     params: {
       vePeriod: 180,
       pvpFee: 100,
-      totalSupply: 1e6,
+      totalSupply: 10_000_000e18,
     },
     funding: [
       {
@@ -165,7 +165,7 @@ export const daos: IDAOData[] = [
       pvpFee: 80,
       minPower: 4000,
       recoveryShare: 10,
-      totalSupply: 1e6,
+      totalSupply: 100_000_000e18,
     },
     funding: [
       {
@@ -294,16 +294,13 @@ export const daos: IDAOData[] = [
     initialChain: ChainName.ETHEREUM,
     units: [
       {
-        unitId: "mevbot:liquidation",
-      },
-      {
-        unitId: "mevbot:arb",
+        unitId: "mevbot:ethereum",
       },
     ],
     params: {
       vePeriod: 120,
       pvpFee: 100,
-      totalSupply: 1e6,
+      totalSupply: 1_000_000e18,
     },
     funding: [
       {
@@ -322,13 +319,20 @@ export const daos: IDAOData[] = [
     daoMetaDataLocation: "local",
     unitsMetaData: [
       {
+        name: "Ethereum",
+        status: UnitStatus.BUILDING_PROTOTYPE,
+        revenueShare: 100,
+        type: UnitType.MEV_SEARCHER,
+        emoji: "🧙",
+      },
+      /*{
         name: "Liquidator",
         status: UnitStatus.RESEARCH,
         revenueShare: 100,
         type: UnitType.MEV_SEARCHER,
-        /*components: {
+        /!*components: {
           [UnitComponentCategory.MEV_STRATEGY]: [],
-        },*/
+        },*!/
         emoji: "🐺",
       },
       {
@@ -336,11 +340,11 @@ export const daos: IDAOData[] = [
         status: UnitStatus.RESEARCH,
         revenueShare: 100,
         type: UnitType.MEV_SEARCHER,
-        /*components: {
+        /!*components: {
           [UnitComponentCategory.MEV_STRATEGY]: [],
-        },*/
+        },*!/
         emoji: "🦄",
-      },
+      },*/
     ],
   },
 ];

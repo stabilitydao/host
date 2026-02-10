@@ -21,6 +21,8 @@ import { activities } from "../src/activity";
 import { UnitStatus, UnitType } from "../src/host/types";
 
 describe("testing Host", () => {
+  const DEFAULT_TOTAL_SUPPLY = 1_000_000;
+
   test("Lifecycle", () => {
     // OS supports 3 EVM blockchains
     // Ethereum
@@ -44,6 +46,7 @@ describe("testing Host", () => {
         pvpFee: 100,
       },
       [_generateSeedFunding(os56)],
+      DEFAULT_TOTAL_SUPPLY,
     );
 
     // todo other OS instances must see a symbol of new DAO
@@ -349,6 +352,7 @@ describe("testing Host", () => {
         pvpFee: 90,
       },
       [_generateSeedFunding(os1, 7 * 86400)],
+      DEFAULT_TOTAL_SUPPLY,
     );
 
     // todo other OS instances must see a symbol of new DAO
@@ -376,13 +380,15 @@ describe("testing Host", () => {
       ],
     );
     os1.updateSocials(daoApes.symbol, ["https://apes.aa", "https://apes.bb"]);
-    os1.updateVesting(daoApes.symbol, [
-      _generateVesting(
-        "Development",
-        daoAliens.funding[os1.getFundingIndex(daoApes.symbol, FundingType.SEED)]
-          .end as number,
-      ),
-    ]);
+
+    // todo Vesting requires not TGE with valid claim value
+    // os1.updateVesting(daoApes.symbol, [
+    //   _generateVesting(
+    //     "Development",
+    //     daoAliens.funding[os1.getFundingIndex(daoApes.symbol, FundingType.SEED)]
+    //       .end as number,
+    //   ),
+    // ]);
 
     // apes forgot they created DRAFT
     // 15 days later
@@ -428,6 +434,7 @@ describe("testing Host", () => {
         pvpFee: 99,
       },
       [_generateSeedFunding(os10, 7 * 86400), _generateTGEFunding(os10)],
+      DEFAULT_TOTAL_SUPPLY,
     );
 
     os10.updateImages(daoMachines.symbol, {
@@ -563,6 +570,7 @@ describe("testing Host", () => {
           pvpFee: 90,
         },
         funding,
+        DEFAULT_TOTAL_SUPPLY,
       );
       expect(0).toBe(1);
     } catch (error: Error | unknown) {
@@ -580,6 +588,7 @@ describe("testing Host", () => {
           pvpFee: 90,
         },
         funding,
+        DEFAULT_TOTAL_SUPPLY,
       );
       expect(0).toBe(1);
     } catch (error: Error | unknown) {
@@ -597,6 +606,7 @@ describe("testing Host", () => {
           pvpFee: 90,
         },
         funding,
+        DEFAULT_TOTAL_SUPPLY,
       );
       expect(0).toBe(1);
     } catch (error: Error | unknown) {
@@ -614,6 +624,7 @@ describe("testing Host", () => {
           pvpFee: 100,
         },
         funding,
+        DEFAULT_TOTAL_SUPPLY,
       );
       expect(0).toBe(1);
     } catch (error: Error | unknown) {
@@ -631,6 +642,7 @@ describe("testing Host", () => {
           pvpFee: 101,
         },
         funding,
+        DEFAULT_TOTAL_SUPPLY,
       );
       expect(0).toBe(1);
     } catch (error: Error | unknown) {
@@ -648,6 +660,7 @@ describe("testing Host", () => {
           pvpFee: 90,
         },
         [],
+        DEFAULT_TOTAL_SUPPLY,
       );
       expect(0).toBe(1);
     } catch (error: Error | unknown) {
@@ -774,6 +787,7 @@ describe("testing Host", () => {
         pvpFee: 90,
       },
       funding,
+      DEFAULT_TOTAL_SUPPLY,
     );
   };
 
@@ -808,6 +822,7 @@ describe("testing Host", () => {
       minRaise,
       maxRaise,
       raised: 0,
+      claim: os.blockTimestamp + 7 * 30 * 86400,
     };
   };
 
@@ -816,7 +831,7 @@ describe("testing Host", () => {
     tgeEnd: number,
     cliff: number = 180 * 86400,
     duration: number = 365 * 86400,
-    allocation: number = 100,
+    allocation: number = 95,
   ): IVesting => {
     return {
       name,

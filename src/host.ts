@@ -116,6 +116,9 @@ export interface IDAOData {
   /** DAO custom metadata stored off-chain. */
   daoMetaDataLocation?: string; // "local","https://..."
 
+  /** Total supply of DAO token. This value can be changed before start of TGE*/
+  totalSupply: number;
+
   /** SEGMENT 4: OFF-CHAIN emitted data */
 
   unitsMetaData: IUnitMetaData[];
@@ -458,7 +461,7 @@ export class Host {
     maxFindingRaise: 1e12,
     minVestingNameLen: 1,
     maxVestingNameLen: 20,
-    minCliff: 15
+    minCliff: 15,
   };
 
   constructor(chainId: string) {
@@ -498,6 +501,7 @@ export class Host {
     activity: Activity[],
     params: IDAOParameters,
     funding: IFunding[],
+    totalSupply: number,
     metaDataLocation?: string,
   ): IDAOData {
     const dao: IDAOData = {
@@ -523,6 +527,7 @@ export class Host {
       salts: {},
       daoMetaDataLocation: metaDataLocation,
       unitsMetaData: [],
+      totalSupply,
     };
 
     this.validate(dao);
@@ -1093,7 +1098,8 @@ export class Host {
   }
 
   getTgeData(dao: IDAOData): IFunding | undefined {
-    const fundingExist = dao.funding.filter((f) => f.type === FundingType.TGE).length === 1;
+    const fundingExist =
+      dao.funding.filter((f) => f.type === FundingType.TGE).length === 1;
     if (fundingExist) {
       const fundingIndex = this.getFundingIndex(dao.symbol, FundingType.TGE);
       return dao.funding[fundingIndex];
@@ -1160,7 +1166,11 @@ export class Host {
     Validation.validateActivity(activity);
   }
 
-  private _validateVesting(daoPhase: LifecyclePhase, vestings: IVesting[], tge?: IFunding) {
+  private _validateVesting(
+    daoPhase: LifecyclePhase,
+    vestings: IVesting[],
+    tge?: IFunding,
+  ) {
     Validation.validateVesting(daoPhase, vestings, this.settings, tge);
   }
 

@@ -74,10 +74,10 @@ describe("testing DAO data validation", () => {
     };
   }
 
-  function getTge(opt?:{claim?: number}): IFunding {
+  function getTge(opt?: { claim?: number }): IFunding {
     return makeFunding({
       type: FundingType.TGE,
-      claim: opt ? opt.claim : (START_DAO + 10 * DAY),
+      claim: opt ? opt.claim : START_DAO + 10 * DAY,
     });
   }
 
@@ -139,7 +139,11 @@ describe("testing DAO data validation", () => {
     test("testValidateTgeFundingPositive", () => {
       const funding = makeFunding({ type: FundingType.TGE });
       expect(() =>
-        Validation.validateFunding(LifecyclePhase.DEVELOPMENT, [funding], settings),
+        Validation.validateFunding(
+          LifecyclePhase.DEVELOPMENT,
+          [funding],
+          settings,
+        ),
       ).not.toThrow();
     });
 
@@ -240,7 +244,11 @@ describe("testing DAO data validation", () => {
     test("tableValidateFundingNegativeBadPhase -> TooLateToUpdateSuchFunding", () => {
       const fSeed = makeFunding({ type: FundingType.SEED });
       expect(() =>
-        Validation.validateFunding(LifecyclePhase.DEVELOPMENT, [fSeed], settings),
+        Validation.validateFunding(
+          LifecyclePhase.DEVELOPMENT,
+          [fSeed],
+          settings,
+        ),
       ).toThrow("TooLateToUpdateSuchFunding");
 
       const fTge = makeFunding({ type: FundingType.TGE });
@@ -263,7 +271,7 @@ describe("testing DAO data validation", () => {
         LifecyclePhase.TGE,
         makeSingleVesting({ name: "12345" }),
         st,
-        getTge()
+        getTge(),
       );
       Validation.validateVesting(
         LifecyclePhase.TGE,
@@ -296,7 +304,12 @@ describe("testing DAO data validation", () => {
         ...makeSingleVesting({ name: "1", allocation: 0 }), // (!)
       ];
       expect(() =>
-        Validation.validateVesting(LifecyclePhase.TGE, normal, settings, getTge()),
+        Validation.validateVesting(
+          LifecyclePhase.TGE,
+          normal,
+          settings,
+          getTge(),
+        ),
       ).toThrow("ZeroValueNotAllowed");
     });
 
@@ -306,7 +319,12 @@ describe("testing DAO data validation", () => {
         ...makeSingleVesting({ name: "1", allocation: 0.99 }),
       ];
       expect(() =>
-        Validation.validateVesting(LifecyclePhase.TGE, normal, settings, getTge()),
+        Validation.validateVesting(
+          LifecyclePhase.TGE,
+          normal,
+          settings,
+          getTge(),
+        ),
       ).not.toThrow();
 
       const oneHundred = [
@@ -351,16 +369,14 @@ describe("testing DAO data validation", () => {
         ),
       ).toThrow("VestingNotAllowed");
 
-
       expect(() =>
         Validation.validateVesting(
           LifecyclePhase.TGE,
           normal,
           settings,
-          getTge({claim: undefined}),
+          getTge({ claim: undefined }),
         ),
       ).toThrow("VestingNotAllowed");
-
 
       expect(() =>
         Validation.validateVesting(
@@ -373,13 +389,13 @@ describe("testing DAO data validation", () => {
     });
 
     test("vestring.start > tge.claim + min cliff, ok", () => {
-      const st: IOSSettings = {...settings, minCliff: 5};
+      const st: IOSSettings = { ...settings, minCliff: 5 };
       expect(() =>
         Validation.validateVesting(
           LifecyclePhase.TGE,
           makeSingleVesting({ name: "1", allocation: 90, startOffsetDays: 20 }),
           st,
-          getTge({claim: START_DAO + 15 * DAY}),
+          getTge({ claim: START_DAO + 15 * DAY }),
         ),
       ).not.toThrow();
     });
@@ -391,10 +407,9 @@ describe("testing DAO data validation", () => {
           LifecyclePhase.TGE,
           makeSingleVesting({ name: "1", allocation: 90, startOffsetDays: 20 }),
           st,
-          getTge({claim: START_DAO + 16 * DAY}),
+          getTge({ claim: START_DAO + 16 * DAY }),
         ),
       ).toThrow("IncorrectVestingStart");
     });
-
   });
 });

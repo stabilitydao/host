@@ -112,7 +112,11 @@ export class Validation {
     }
   }
 
-  private static _validateVesting(vesting: IVesting, settings: IOSSettings, tge: IFunding) {
+  private static _validateVesting(
+    vesting: IVesting,
+    settings: IOSSettings,
+    tge: IFunding,
+  ) {
     if (
       vesting.name.length < settings.minVestingNameLen ||
       vesting.name.length > settings.maxVestingNameLen
@@ -124,7 +128,7 @@ export class Validation {
       throw new Error("ZeroValueNotAllowed");
     }
 
-    if ((vesting.start < (tge.claim ?? 0) + settings.minCliff * 24 * 3600)) {
+    if (vesting.start < (tge.claim ?? 0) + settings.minCliff * 24 * 3600) {
       throw new Error("IncorrectVestingStart");
     }
   }

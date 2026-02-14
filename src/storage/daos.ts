@@ -98,6 +98,7 @@ export const daos: IDAOData[] = [
       "https://x.com/stabilitydao",
       "https://discord.com/invite/R3nnetWzC9",
       "https://t.me/stabilitydao",
+      "https://github.com/stabilitydao",
     ],
     activity: [Activity.DEFI],
     images: {
@@ -155,11 +156,21 @@ export const daos: IDAOData[] = [
       },
     },
     chainSettings: {
+      ["137"]: {
+        bbRate: 100,
+        multisig: "0x36780E69D38c8b175761c6C5F8eD42E61ee490E9",
+      },
       ["146"]: {
         bbRate: 100,
+        multisig: "0xF564EBaC1182578398E94868bea1AbA6ba339652",
       },
       ["9745"]: {
         bbRate: 0,
+        multisig: "0xE929438B5B53984FdBABf8562046e141e90E8099",
+      },
+      ["43114"]: {
+        bbRate: 50,
+        multisig: "0x06111E02BEb85B57caebEf15F5f90Bc82D54da3A",
       },
     },
     initialChain: ChainName.SONIC,

@@ -7,22 +7,22 @@ export const metaData: { [symbol: string]: IDAOMetaData } = {
   host: {
     builderActivity: {
       multisig: [
-        "137:0x36780E69D38c8b175761c6C5F8eD42E61ee490E9",
-        "146:0xF564EBaC1182578398E94868bea1AbA6ba339652",
-        "43114:0x06111E02BEb85B57caebEf15F5f90Bc82D54da3A",
-        "9745:0xE929438B5B53984FdBABf8562046e141e90E8099",
+        //"137:0x36780E69D38c8b175761c6C5F8eD42E61ee490E9",
+        //"146:0xF564EBaC1182578398E94868bea1AbA6ba339652",
+        //"43114:0x06111E02BEb85B57caebEf15F5f90Bc82D54da3A",
+        //"9745:0xE929438B5B53984FdBABf8562046e141e90E8099",
       ],
       repo: [
-        "stabilitydao/stability",
-        "stabilitydao/stability-contracts",
-        "stabilitydao/stability-ui",
-        "stabilitydao/stability-subgraph",
-        "stabilitydao/lending-deploy",
-        "stabilitydao/stability-node-pro",
-        "stabilitydao/host",
-        "stabilitydao/host-contracts",
-        "stabilitydao/host-agent",
-        "stabilitydao/host-ui",
+        // "stabilitydao/stability",
+        // "stabilitydao/stability-contracts",
+        // "stabilitydao/stability-ui",
+        // "stabilitydao/stability-subgraph",
+        // "stabilitydao/lending-deploy",
+        // "stabilitydao/stability-node-pro",
+        // "stabilitydao/host",
+        // "stabilitydao/host-contracts",
+        // "stabilitydao/host-agent",
+        // "stabilitydao/host-ui",
       ],
       burnRate: [
         {

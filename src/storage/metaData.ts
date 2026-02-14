@@ -1,28 +1,28 @@
 import { IDAOMetaData } from "../host";
 import { ArtifactType } from "../activity/builder";
-import { AgentRole, emptyRuntime } from "../agents";
+import { AgentRole } from "../agents";
 import { UnitComponentCategory } from "../host/types";
 
-export const daoMetaData: { [symbol: string]: IDAOMetaData } = {
+export const metaData: { [symbol: string]: IDAOMetaData } = {
   host: {
     builderActivity: {
       multisig: [
-        "137:0x36780E69D38c8b175761c6C5F8eD42E61ee490E9",
-        "146:0xF564EBaC1182578398E94868bea1AbA6ba339652",
-        "43114:0x06111E02BEb85B57caebEf15F5f90Bc82D54da3A",
-        "9745:0xE929438B5B53984FdBABf8562046e141e90E8099",
+        //"137:0x36780E69D38c8b175761c6C5F8eD42E61ee490E9",
+        //"146:0xF564EBaC1182578398E94868bea1AbA6ba339652",
+        //"43114:0x06111E02BEb85B57caebEf15F5f90Bc82D54da3A",
+        //"9745:0xE929438B5B53984FdBABf8562046e141e90E8099",
       ],
       repo: [
-        "stabilitydao/stability",
-        "stabilitydao/stability-contracts",
-        "stabilitydao/stability-ui",
-        "stabilitydao/stability-subgraph",
-        "stabilitydao/lending-deploy",
-        "stabilitydao/stability-node-pro",
-        "stabilitydao/host",
-        "stabilitydao/host-contracts",
-        "stabilitydao/host-agent",
-        "stabilitydao/host-ui",
+        // "stabilitydao/stability",
+        // "stabilitydao/stability-contracts",
+        // "stabilitydao/stability-ui",
+        // "stabilitydao/stability-subgraph",
+        // "stabilitydao/lending-deploy",
+        // "stabilitydao/stability-node-pro",
+        // "stabilitydao/host",
+        // "stabilitydao/host-contracts",
+        // "stabilitydao/host-agent",
+        // "stabilitydao/host-ui",
       ],
       burnRate: [
         {
@@ -266,22 +266,26 @@ export const daoMetaData: { [symbol: string]: IDAOMetaData } = {
     },
     agents: [
       {
-        roles: [AgentRole.OPERATOR],
+        roles: [AgentRole.API_OPERATOR],
+        unitIds: ["core"],
         name: "Host Operator",
         image: "BUILDER.png",
-        ...emptyRuntime,
-        api: [],
+        api: ["https://api.dao.host"],
       },
     ],
   },
   stbl: {
     agents: [
       {
-        roles: [AgentRole.OPERATOR],
+        roles: [AgentRole.API_OPERATOR, AgentRole.TX_SENDER],
+        unitIds: [
+          "xstbl",
+          "stability:stabilityFarm",
+          "stability:stabilityMarket",
+        ],
         name: "Stability Operator",
         telegram: "@stability_dao_bot",
         image: "OPERATOR.png",
-        ...emptyRuntime,
         api: ["https://api.stability.farm", "https://api.stabilitydao.org"],
       },
     ],
@@ -315,8 +319,8 @@ export const daoMetaData: { [symbol: string]: IDAOMetaData } = {
     agents: [
       {
         roles: [AgentRole.MEV_SEARCHER],
+        unitIds: ["mevbot:ethereum"],
         name: "MEVBOT Agent",
-        ...emptyRuntime,
         api: [],
       },
     ],

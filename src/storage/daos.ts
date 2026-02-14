@@ -1,6 +1,7 @@
 import {
   ContractIndices,
   FundingType,
+  HOST_DESCRIPTION,
   IDAOData,
   LifecyclePhase,
 } from "../host";
@@ -58,10 +59,11 @@ export const daos: IDAOData[] = [
     governanceSettings: {},
     deployer: "0x0",
     salts: {},
-    daoMetaDataLocation: "local",
-    unitsMetaData: [
+    metaDataLocation: "local",
+    unitEmitData: [
       {
         name: "dao.host",
+        description: HOST_DESCRIPTION,
         status: UnitStatus.BUILDING_PROTOTYPE,
         revenueShare: 100,
         type: UnitType.DEFI_PROTOCOL,
@@ -96,6 +98,7 @@ export const daos: IDAOData[] = [
       "https://x.com/stabilitydao",
       "https://discord.com/invite/R3nnetWzC9",
       "https://t.me/stabilitydao",
+      "https://github.com/stabilitydao",
     ],
     activity: [Activity.DEFI],
     images: {
@@ -153,11 +156,21 @@ export const daos: IDAOData[] = [
       },
     },
     chainSettings: {
+      ["137"]: {
+        bbRate: 100,
+        multisig: "0x36780E69D38c8b175761c6C5F8eD42E61ee490E9",
+      },
       ["146"]: {
         bbRate: 100,
+        multisig: "0xF564EBaC1182578398E94868bea1AbA6ba339652",
       },
       ["9745"]: {
         bbRate: 0,
+        multisig: "0xE929438B5B53984FdBABf8562046e141e90E8099",
+      },
+      ["43114"]: {
+        bbRate: 50,
+        multisig: "0x06111E02BEb85B57caebEf15F5f90Bc82D54da3A",
       },
     },
     initialChain: ChainName.SONIC,
@@ -176,7 +189,7 @@ export const daos: IDAOData[] = [
       vePeriod: 180,
       pvpFee: 80,
       minPower: 4000,
-      recoveryShare: 10,
+      recoveryShare: 20,
       totalSupply: 100_000_000e18,
     },
     funding: [
@@ -226,16 +239,18 @@ export const daos: IDAOData[] = [
     },
     deployer: "0x0",
     salts: {},
-    daoMetaDataLocation: "local",
-    unitsMetaData: [
+    metaDataLocation: "local",
+    unitEmitData: [
       {
         name: "PVP",
+        description: "xSTBL exit fees",
         status: UnitStatus.LIVE,
         revenueShare: 100,
         type: UnitType.PVP,
       },
       {
         name: "VaaS",
+        description: "DeFi Vault as a Service platform",
         status: UnitStatus.LIVE,
         revenueShare: 100,
         type: UnitType.DEFI_PROTOCOL,
@@ -271,7 +286,8 @@ export const daos: IDAOData[] = [
         },
       },
       {
-        name: "Lending",
+        name: "Sonic Markets",
+        description: "Stability Money Markets on Sonic network (ex-Vicuna)",
         status: UnitStatus.LIVE,
         revenueShare: 25,
         type: UnitType.DEFI_PROTOCOL,
@@ -283,7 +299,7 @@ export const daos: IDAOData[] = [
           },
         ],
         pool: {
-          repos: ["stabilitydao/lending-deploy"],
+          repos: ["stabilitydao/lending-deploy", "stabilitydao/stability-ui"],
           label: {
             name: "STBL:Lending",
             description:
@@ -334,10 +350,11 @@ export const daos: IDAOData[] = [
     governanceSettings: {},
     deployer: "0x0",
     salts: {},
-    daoMetaDataLocation: "local",
-    unitsMetaData: [
+    metaDataLocation: "local",
+    unitEmitData: [
       {
         name: "EthereumBot",
+        description: "Ethereum MEV Searcher machine",
         status: UnitStatus.BUILDING_PROTOTYPE,
         revenueShare: 100,
         type: UnitType.MEV_SEARCHER,

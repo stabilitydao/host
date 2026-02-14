@@ -28,7 +28,7 @@ import {
   getBridgeTokens,
   IDAOData,
   IUnit,
-  IUnitMetaData,
+  IUnitEmitData,
   IContractIndex,
   daoContractIndices,
   HOST_DESCRIPTION,
@@ -36,7 +36,7 @@ import {
   STATIC_BASE_URL,
 } from "./host";
 import { daos } from "./storage/daos";
-import { daoMetaData } from "./storage/daoMetaData";
+import { metaData } from "./storage/metaData";
 import { RevenueChart, IHostAgentMemory, IHostAgentMemoryV3 } from "./api";
 import { hostDeployments } from "./deployments";
 import { UnitStatus } from "./host/types";
@@ -55,7 +55,7 @@ export {
   Host,
   UnitStatus,
   daos,
-  daoMetaData,
+  metaData,
   getDAOUnit,
   getUnit,
   getDAOUnitMetaData,
@@ -76,7 +76,7 @@ export type {
   ChainStatusInfo,
   IDAOData,
   IUnit,
-  IUnitMetaData,
+  IUnitEmitData,
   IUnitPool,
   IConveyor,
   IGithubIssueV2,

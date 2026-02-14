@@ -4,7 +4,7 @@
 
 import { ChainName, chains, getChainByName } from "./chains";
 import { IAgent } from "./agents";
-import { IBuilderActivity, IPool, IUnitPool } from "./activity/builder";
+import { IBuilderActivity, IUnitPool } from "./activity/builder";
 import { Activity } from "./activity";
 import { IDAOAPIDataV2 } from "./api";
 import { getTokenData, TokenData } from "./assets";
@@ -29,7 +29,7 @@ export const STATIC_BASE_URL: `https://${string}` =
 
  host-contracts: `IHost.DAOData`
 
- @version 0.3.0
+ @version 0.7.0
  @alpha
  @interface
  */
@@ -114,16 +114,16 @@ export interface IDAOData {
   };
 
   /** DAO custom metadata stored off-chain. */
-  daoMetaDataLocation?: string; // "local","https://..."
+  metaDataLocation?: string; // "local","https://..."
 
   /** SEGMENT 4: OFF-CHAIN emitted data */
 
-  unitsMetaData: IUnitMetaData[];
+  unitEmitData: IUnitEmitData[];
 
   /** SEGMENT 5: OFF-CHAIN data on custom location */
 
-  /** Storage for BUILDER activity and Agents data. */
-  daoMetaData?: IDAOMetaData;
+  /** Storage for Agents data. */
+  metaData?: IDAOMetaData;
 
   /** SEGMENT 6: API data of DAO */
 
@@ -390,15 +390,18 @@ export interface IUnit {
   /** Unique unit string id. For DeFi protocol its defiOrg:protocolKey. */
   unitId: string;
   /** Blockchains where Unit deployed. Filled only for initial DAO chain Host instance. */
+
   chainIds?: string[];
   /** DAO UID of Unit Developer (Pool tasks solver) */
   developerUid?: string;
 }
 
 /** Unit data that emitted, indexed and saved, translated by Host API later. */
-export interface IUnitMetaData {
+export interface IUnitEmitData {
   /** Short name of the unit */
   name: string;
+  /** Description of the unit */
+  description: string;
   /** Status of unit changes appear when unit starting to work and starting earning revenue */
   status: UnitStatus;
   /** Supported type of the Unit */
@@ -407,6 +410,8 @@ export interface IUnitMetaData {
   revenueShare: number;
   /** A unique emoji for the shortest possible representation of a Unit. */
   emoji?: string;
+  /** Custom image location for Unit. When not used then DAO image used. */
+  image?: string;
   /** Frontend endpoints of Unit */
   ui?: IUnitUILink[];
   /** Links to API of the Unit */
@@ -535,8 +540,8 @@ export class Host {
       governanceSettings: {},
       deployer: this.from,
       salts: {},
-      daoMetaDataLocation: metaDataLocation,
-      unitsMetaData: [],
+      metaDataLocation: metaDataLocation,
+      unitEmitData: [],
     };
 
     this.validate(dao);
@@ -567,7 +572,7 @@ export class Host {
     symbol: string,
   ): IDAOMetaData {
     const dao = this.getDAO(symbol);
-    if (dao.daoMetaDataLocation === "local") {
+    if (dao.metaDataLocation === "local") {
       return daoMetaData[symbol.toLowerCase()] as IDAOMetaData;
     }
     return {};
@@ -732,7 +737,7 @@ export class Host {
   updateUnits(
     symbol: string,
     units: IUnit[],
-    unitsMetaData: IUnitMetaData[],
+    unitsMetaData: IUnitEmitData[],
   ): string | true {
     // check DAO symbol
     const dao = this.getDAO(symbol);
@@ -780,10 +785,10 @@ export class Host {
   private _updateUnits(
     symbol: string,
     units: IUnit[],
-    unitsMetaData: IUnitMetaData[],
+    unitsMetaData: IUnitEmitData[],
   ) {
     this.daos[symbol].units = units;
-    this.daos[symbol].unitsMetaData = unitsMetaData;
+    this.daos[symbol].unitEmitData = unitsMetaData;
     this._emit(`Action ${DAOAction.UPDATE_UNITS}`);
   }
 
@@ -1020,7 +1025,7 @@ export class Host {
       }
 
       if (
-        dao.unitsMetaData?.filter(
+        dao.unitEmitData?.filter(
           (unitMetaData) => unitMetaData.status === UnitStatus.LIVE,
         ).length === 0
       ) {
@@ -1294,13 +1299,13 @@ export function getDAOUnitMetaData(
   daos: IDAOData[],
   symbol: string,
   unitId: string,
-): IUnitMetaData | undefined {
+): IUnitEmitData | undefined {
   for (const dao of daos) {
     if (dao.symbol.toLowerCase() === symbol.toLowerCase()) {
       for (let i = 0; i < dao.units.length; i++) {
         const unit = dao.units[i];
         if (unit.unitId === unitId) {
-          return dao.unitsMetaData[i];
+          return dao.unitEmitData[i];
         }
       }
     }
@@ -1310,12 +1315,12 @@ export function getDAOUnitMetaData(
 export function getUnitMetaData(
   daos: IDAOData[],
   unitId: string,
-): IUnitMetaData | undefined {
+): IUnitEmitData | undefined {
   for (const dao of daos) {
     for (let i = 0; i < dao.units.length; i++) {
       const unit = dao.units[i];
       if (unit.unitId === unitId) {
-        return dao.unitsMetaData[i];
+        return dao.unitEmitData[i];
       }
     }
   }

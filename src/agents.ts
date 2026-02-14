@@ -7,26 +7,14 @@ export interface IAgent {
   api: string[];
   roles: AgentRole[];
   name: string;
+  unitIds: string[];
   directives?: string[];
   image?: string;
   telegram?: `@${string}`;
 }
 
 export const enum AgentRole {
-  OPERATOR = "OPERATOR",
+  API_OPERATOR = "API_OPERATOR",
+  TX_SENDER = "TX_SENDER",
   MEV_SEARCHER = "MEV_SEARCHER",
 }
-
-export interface IAgentRuntime {
-  machineIDs: string[];
-  providers: {
-    name: string;
-    image: string;
-    queries: number;
-  }[];
-}
-
-export const emptyRuntime: IAgentRuntime = {
-  machineIDs: [],
-  providers: [],
-};

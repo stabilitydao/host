@@ -2,7 +2,7 @@ import {
   daos,
   getDAOUnit,
   Host,
-  daoMetaData,
+  metaData,
   Activity,
   LifecyclePhase,
   getUnit,
@@ -14,7 +14,7 @@ import {
   getBridgeTokens,
   getDAOUnitMetaData,
   IFunding,
-  IUnitMetaData,
+  IUnitEmitData,
   IVesting,
 } from "../src/host";
 import { activities } from "../src/activity";
@@ -182,7 +182,7 @@ describe("testing Host", () => {
       ],
       [
         {
-          ...(daoAliens.unitsMetaData[0] as IUnitMetaData),
+          ...(daoAliens.unitEmitData[0] as IUnitEmitData),
           status: UnitStatus.LIVE,
           ui: [
             {
@@ -533,7 +533,7 @@ describe("testing Host", () => {
       getDAOUnitMetaData(daos, daos[1].symbol, daos[1].units[1].unitId)?.name,
     ).toBe("VaaS");
 
-    expect(os.getDAOMetaData(daoMetaData, daos[1].symbol));
+    expect(os.getDAOMetaData(metaData, daos[1].symbol));
     const roadmap = os.roadmap(daos[1].symbol);
     expect(roadmap.length).toBe(4);
     //console.log(roadmap)
@@ -544,7 +544,7 @@ describe("testing Host", () => {
     const dao = _createDAO(os);
     expect(dao.name).toBe("SpaceSwap");
     expect(os.events.length).toBe(1);
-    expect(os.getDAOMetaData(daoMetaData, dao.symbol));
+    expect(os.getDAOMetaData(metaData, dao.symbol));
 
     const funding: IFunding[] = [
       {
@@ -723,7 +723,7 @@ describe("testing Host", () => {
     const os = new Host("146");
     os.addLiveDAO(daos[0]);
     expect(
-      os.getDAOMetaData(daoMetaData, daos[0].symbol).builderActivity?.workers
+      os.getDAOMetaData(metaData, daos[0].symbol).builderActivity?.workers
         .length,
     ).toBeGreaterThan(1);
   });

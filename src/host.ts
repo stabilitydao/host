@@ -410,6 +410,8 @@ export interface IUnitEmitData {
   revenueShare: number;
   /** A unique emoji for the shortest possible representation of a Unit. */
   emoji?: string;
+  /** Custom image location for Unit. When not used then DAO image used. */
+  image?: string;
   /** Frontend endpoints of Unit */
   ui?: IUnitUILink[];
   /** Links to API of the Unit */

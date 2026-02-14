@@ -4,7 +4,7 @@
 
 import { ChainName, chains, getChainByName } from "./chains";
 import { IAgent } from "./agents";
-import { IBuilderActivity, IPool, IUnitPool } from "./activity/builder";
+import { IBuilderActivity, IUnitPool } from "./activity/builder";
 import { Activity } from "./activity";
 import { IDAOAPIDataV2 } from "./api";
 import { getTokenData, TokenData } from "./assets";
